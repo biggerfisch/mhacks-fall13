@@ -1,0 +1,26 @@
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+    <script>
+        $(document).ready(function(){
+            melody = {
+                "notes": [1,4,2,5,9]
+            }
+            $("#chords").click(function(){
+                jQuery.ajax({
+                    type: "POST",
+                    url: "http://biggerfisch.us.to/songs",
+                    contentType: 'application/json',
+                    data: JSON.stringify(melody),
+                    dataType: "json",
+                    success: function(response){
+                        console.log(response);
+                        alert(respose);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <button id="chords">AWESOME BUTTON</button>
+</body>
