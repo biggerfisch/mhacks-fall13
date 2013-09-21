@@ -19,19 +19,28 @@ noteOffTime,            // The timestamp when noteOff occurred
 tickTime,               // The timestamp when the metronome tick happened
 messages,
 metroTick,
+metroMeasure = -1,      // THe current measure. Starts at -1 and is added to in the beginning
 compensation = 0,       // Delay compensation in ms
 distinctFactor = 1;     // Value between (0 and 1).
 notesList = new Array(),
- = new Array(),
-notesOffTimes = new Array();
+startList = new Array(),
+lengthList = new Array();
+
+function clearAll(){
+    
+}
 
 function dispDataClick(){
-    for (var i = 0; i < notesOnList.length; ++i) {
-        messages.innerHTML += notesOnList[i] + ",";
+    for (var i = 0; i < notesList.length; ++i) {
+        messages.innerHTML += notesList[i] + ",";
     };
     messages.innerHTML += "<br/>";
-    for (var i = 0; i < notesOnTimes.length; ++i) {
-    messages.innerHTML += notesOnTimes[i] + ",";
+    for (var i = 0; i < startList.length; ++i) {
+    messages.innerHTML += startList[i] + ",";
+    };
+    messages.innerHTML += "<br/>";
+    for (var i = 0; i < lengthList.length; ++i) {
+    messages.innerHTML += lengthList[i] + ",";
     };
 }
 
@@ -99,12 +108,10 @@ window.addEventListener('load', function() {
             } else if(noteNumbers[e.which] && !keysPressed[e.which]) {
                 // MY ADDITION
                 noteOnTime = performance.now();
-                matchToMetronome(noteOnTime);
+                getRelevantMidiData(midiBridge.NOTE_ON, noteNumbers[e.which], noteOnTime);
                 noteOnMessage = midiAccess.createMIDIMessage(midiBridge.NOTE_ON, 1, noteNumbers[e.which], 100);
                 output.sendMIDIMessage(noteOnMessage);
                 keysPressed[e.which] = true;
-                notesOnList.push(noteNumbers[e.which]);
-                notesOnTimes.push(noteOnTime);
                 //messages.innerHTML += noteNumbers[e.which] + "NoteOnTime:" + noteOnTime + "TickTime:" + tickTime + "<br/>";
             }
         }, false);
@@ -118,7 +125,7 @@ window.addEventListener('load', function() {
             } else if(noteNumbers[e.which]) {
                 // MY ADDITION
                 noteOffTime = performance.now();
-                //matchToMetronome(noteOnTime);
+                getRelevantMidiData(midiBridge.NOTE_OFF, noteNumbers[e.which], noteOffTime);
                 noteOffMessage = midiAccess.createMIDIMessage(midiBridge.NOTE_OFF, 1, noteNumbers[e.which], 0);
                 output.sendMIDIMessage(noteOffMessage);
                 keysPressed[e.which] = false;
@@ -153,9 +160,32 @@ window.addEventListener('load', function() {
         connectKeyboard();
     });
 
-    // GETS DATA REGARDING IMPORTANT PARTS OF MIDI MESSAGE. TIMESTAMP SHOULD BE Performance.now()
-    function getRelevantMidiData(midiMessage, timestamp){
-
+    // GETS DATA REGARDING IMPORTANT PARTS OF MIDI MESSAGE. 
+    function getRelevantMidiData(midiMessageType, noteVal, noteTimeStamp){
+        matchToMetronome(noteTimeStamp);
+        if (midiMessageType == midiBridge.NOTE_ON)
+        {
+            notesList.push(noteVal);
+            if (lengthList.length > 0){
+                var currTotalPos = metroMeasure * 4 + metroTick;
+                var prevTotalSplit = startList[startList.length - 1].split('.');
+                var prevTotalPos = parseInt(prevTotalSplit[0]) * 4 + parseInt(prevTotalSplit[1]);
+                var oldLen = currTotalPos - prevTotalPos;
+                lengthList.push(oldLen);
+            }
+            startList.push(metroMeasure + "." + metroTick);
+        }
+        else if (midiMessageType == midiBridge.NOTE_OFF)
+        {
+            // THe note off must be the same as the latest note played
+            if (notesList[notesList.length - 1] == noteVal){
+                var currTotalPos = metroMeasure * 4 + metroTick;
+                var prevTotalSplit = startList[startList.length - 1].split('.');
+                var prevTotalPos = parseInt(prevTotalSplit[0]) * 4 + parseInt(prevTotalSplit[1]);
+                var oldLen = currTotalPos - prevTotalPos;
+                lengthList.push(oldLen);
+            }
+        }
     }
 
     // Matches the current note timestamp played to a metronome tick
@@ -273,6 +303,8 @@ var metronome = function(opts) {
             // CHANGE BAR NUMBER COLOR
             if (barNum.innerText == "1")
             {
+                // Increase the measure number
+                ++metroMeasure;
                 barNum.style.color = "DarkRed";
             }
             else
