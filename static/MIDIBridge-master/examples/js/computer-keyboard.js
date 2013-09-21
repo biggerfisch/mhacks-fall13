@@ -18,6 +18,7 @@ noteOnTime,             // The timestamp when noteOn occurred
 noteOffTime,            // The timestamp when noteOff occurred
 tickTime,               // The timestamp when the metronome tick happened
 messages,
+compensation = 0,     // Delay compensation in ms
 notesOnList = new Array(),
 notesOffList = new Array(),
 notesOnTimes = new Array(),
@@ -116,7 +117,7 @@ window.addEventListener('load', function() {
             } else if(noteNumbers[e.which]) {
                 // MY ADDITION
                 noteOffTime = performance.now();
-                matchToMetronome(noteOnTime);
+                //matchToMetronome(noteOnTime);
                 noteOffMessage = midiAccess.createMIDIMessage(midiBridge.NOTE_OFF, 1, noteNumbers[e.which], 0);
                 output.sendMIDIMessage(noteOffMessage);
                 keysPressed[e.which] = false;
@@ -159,13 +160,13 @@ window.addEventListener('load', function() {
     // Matches the current note timestamp played to a metronome tick
     function matchToMetronome(noteTimeStamp){
         messages.innerHTML += noteTimeStamp + "," + tickTime + "," + timeDistinction + "<br/>"
-        if (noteTimeStamp - tickTime <= timeDistinction)
+        if (noteTimeStamp - tickTime <= timeDistinction + compensation)
         {
             messages.innerHTML += "true" + "<br/>";
         }
         else
         {
-            messages.innerHTML += "false" + "<br/>";
+            // messages.innerHTML += "false" + "<br/>";
         }
     }
 
@@ -342,7 +343,7 @@ var metronome = function(opts) {
                     $("#tempo").val(tempo);
 
                     // Set the timedistinction value.
-                    timeDistinction = ((60 / tempo) * 1000) * 0.5;
+                    timeDistinction = ((60 / tempo) * 1000);
                     
                     var ticks = parseInt($('#ticks').val(), 10);
                     if (!ticks || ticks < 8) { ticks = 12000; }
