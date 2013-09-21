@@ -1,13 +1,13 @@
-.topnav-wrapper{
+#topnav-wrapper{
     margin: 0 auto;
 }
 
-.topnav-list-wrapper{
+#topnav-list-wrapper{
     float: none;
     display: table;
 }
 
-.topnav-list{
+ul#topnav-list{
     list-style-type: none;
     display: inline;
     padding: 0;
@@ -30,6 +30,6 @@ a.topnav-link{
 }
 
 a.topnav-link:hover{
-    
+    text-decoration: underline;
 }
 
