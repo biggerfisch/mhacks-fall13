@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+    <head>
+        <title>midi bridge</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="lib/MIDIBridge.js"></script>     
+        <script type="text/javascript" src="lib/MIDIDeviceSelector.js"></script>     
+        <script type="text/javascript" src="js/computer-keyboard.js"></script>
+        <link rel="stylesheet" media="screen" href="css/reset.css"/>
+        <link rel="stylesheet" media="screen" href="css/midibridge.css"/>
+    </head>
+    <body>
+        <div id="content">
+            <!-- dropdown menu for selecting a MIDI output -->
+            <select id="outputs"></select>
+
+            <!-- display keyboard mapping -->
+            <div id="help-message"></div>
+
+            <div>
+                <button onClick="dispDataClick()">Display data</button>
+                <span><button onClick="messages.innerHTML = '';">Clear Output</button></span>
+            </div>
+
+            <!-- MIDI messages get displayed here -->
+            <div id="messages">Please select a MIDI output<br/></div>
+
+            <!-- Bar Nums -->
+            <div id="barNum" style="font-size: 200%"><br/></div>
+
+            <!-- METRONOME STUFF!!! -->
+            <table class="example">
+                <tr>
+                    <td><div id="metronome_container"></div></td>
+                    <td><div class="status"></div></td>
+                </tr>
+                <tr>
+                    <td colspan=2 id="inputs"></td>
+                </tr>
+            </table>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+            <script>
+                /*global $ Raphael soundManager metronome*/
+
+                function tick(t) {
+                    // $("<div />").html(t % 2 === 1 ? "Tick" : "Tock").addClass("statusline").appendTo(".status");
+                    // $("#count").html(t);    
+                }
+
+                function done() {
+                //     $("<div />").html("Done!").addClass("statusline").css("background-color", "#FFFF99").appendTo(".status");
+                     $("#startstop").html("start");
+                }
+
+                var paper = Raphael("metronome_container", 200, 200);
+
+                var m = metronome({
+                    len: 200,
+                    angle: 20,
+                    tick: tick,
+                    complete: done,
+                    paper: paper,
+                    audio: "tick.wav?raw=true"
+                });
+
+                m.make_input("#inputs");
+
+                m.shapes().outline.attr("fill", "#00A30F");
+                m.shapes().arm.attr("stroke", "#EEE");
+            </script>
+            <!-- END METRONOME STUFF!!! -->
+
+        </div>
+    </body>
+</html>
