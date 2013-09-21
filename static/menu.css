@@ -1,0 +1,35 @@
+.topnav-wrapper{
+    margin: 0 auto;
+}
+
+.topnav-list-wrapper{
+    float: none;
+    display: table;
+}
+
+.topnav-list{
+    list-style-type: none;
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+.topnav-element{
+    float: left;
+
+}
+
+a.topnav-link{
+    width: 100px;
+    
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+    
+    background-color: #999999;
+}
+
+a.topnav-link:hover{
+    
+}
+
