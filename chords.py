@@ -44,7 +44,7 @@ def fetch_song(token):
         abort(404)
     
 @app.route('/home')
-def home_page():
+def home_page2():
     return render_template('home.html')
 
 @app.route('/about/')
