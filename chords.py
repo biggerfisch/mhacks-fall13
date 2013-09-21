@@ -15,7 +15,7 @@ def make_chords():
     return jsonify( { 'herp': derp } ), 201
 
 @app.route('/about')
-def home_page():
+def about_page():
     return render_template('about.html')
     
 if __name__ == '__main__':
