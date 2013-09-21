@@ -42,10 +42,6 @@ def fetch_song(token):
         return jsonify({'notes': song['notes']})
     else:
         abort(404)
-    
-@app.route('/home')
-def home_page():
-    return render_template('home.html')
 
 @app.route('/about/')
 def about_page():
