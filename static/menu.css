@@ -28,9 +28,10 @@ a.topnav-link{
     
     text-decoration: none;
     font-size: 20px;
-    color: black;
+    color: white;
+    font-style: bold;
     
-    background-color: #999999;
+    background-color: #888888;
 }
 
 a.topnav-link:hover{
