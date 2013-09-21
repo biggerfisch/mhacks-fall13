@@ -18,16 +18,12 @@ noteOnTime,             // The timestamp when noteOn occurred
 noteOffTime,            // The timestamp when noteOff occurred
 tickTime,               // The timestamp when the metronome tick happened
 messages,
+metroTick,
 compensation = 0,       // Delay compensation in ms
-distinctFactor = 0.8;   // Value between (0 and 1).
-notesOnList = new Array(),
-notesOffList = new Array(),
-notesOnTimes = new Array(),
+distinctFactor = 1;     // Value between (0 and 1).
+notesList = new Array(),
+ = new Array(),
 notesOffTimes = new Array();
-
-function clear(){
-    
-}
 
 function dispDataClick(){
     for (var i = 0; i < notesOnList.length; ++i) {
@@ -164,14 +160,23 @@ window.addEventListener('load', function() {
 
     // Matches the current note timestamp played to a metronome tick
     function matchToMetronome(noteTimeStamp){
-        messages.innerHTML += noteTimeStamp + "," + tickTime + "," + timeDistinction + "<br/>"
-        if (noteTimeStamp - tickTime <= timeDistinction + compensation)
+        var step = (60 / tempo) * 1000;
+        // Closer to current tick
+        if (Math.abs(tickTime + step - noteTimeStamp) > Math.abs(tickTime - noteTimeStamp))
         {
-            messages.innerHTML += "true" + "<br/>";
+            messages.innerHTML += metroTick + "<br/>";
         }
-        else
+        else    // Next tick otherwise
         {
-            // messages.innerHTML += "false" + "<br/>";
+            if (metroTick == 4)
+            { 
+                metroTick = 1;
+            }
+            else
+            {
+                ++metroTick;
+            }
+            messages.innerHTML += metroTick + "<br/>";
         }
     }
 
@@ -248,18 +253,22 @@ var metronome = function(opts) {
             tickTime = performance.now();
             //messages.innerHTML += "metronomeTime:" + tickTime + "<br/>";
             barNum = document.getElementById("barNum");
+            metroTick = tick_count % 4;
             // SHOW BAR NUMBER
             if (tick_count < 4)
             {
+                // Set to global var representing tick
+                metroTick = tick_count;
                 barNum.innerHTML = tick_count;
             }
-            else if (tick_count % 4 === 0)
+            else if (metroTick == 0)  // 4th beat
             {
+                metroTick = 4;
                 barNum.innerHTML = 4;
             }
             else
             {
-                barNum.innerHTML = tick_count % 4;
+                barNum.innerHTML = metroTick;
             }
             // CHANGE BAR NUMBER COLOR
             if (barNum.innerText == "1")
