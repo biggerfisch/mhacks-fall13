@@ -69,7 +69,7 @@ body{
 	transition: transform 0.26s ease;
 }
 
-.highlight-para:hover ~ .highlight-para{
+.highlight-para:hover ~ .highlight-dropdown{
     -webkit-transform: scaleY(1);
 	-o-transform: scaleY(1);
 	-ms-transform: scaleY(1);
