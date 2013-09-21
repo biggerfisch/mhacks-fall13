@@ -7,6 +7,15 @@
     </head>
     {% endblock %}
     <body>
+        {% block navigation%}
+        <div id="topnav-wrapper">
+            <div id="topnav-list-wrapper">
+                <ul id="topnav-list">
+                    <li class="topnav-element"><a class="topnav-link" href="http://google.com">Google</a></li>
+                </ul>
+            </div>
+        </div>
+        {% endblock %}
         <div id="main-wrapper">
             <div id="main-block">
             {% block main_block %}
