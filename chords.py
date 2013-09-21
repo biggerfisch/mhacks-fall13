@@ -13,6 +13,10 @@ def make_chords():
             'num_notes': len(request.json['notes'])
     }
     return jsonify( { 'herp': derp } ), 201
+    
+@app.route('/home')
+def home_page():
+    return render_template('home.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
