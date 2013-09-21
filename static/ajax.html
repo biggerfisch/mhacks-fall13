@@ -6,6 +6,7 @@
                 "notes": [1,4,2,5,9]
             }
             $("#chords").click(function(){
+		console.log("CLICKY");
                 jQuery.ajax({
                     type: "POST",
                     url: "http://biggerfisch.us.to/songs",
@@ -13,8 +14,9 @@
                     data: JSON.stringify(melody),
                     dataType: "json",
                     success: function(response){
-                        console.log(response);
-                        alert(response);
+			console.log("HERP DERP");
+                        console.log(JSON.stringify(response));
+                        alert(JSON.stringify(response));
                     }
                 });
             });
