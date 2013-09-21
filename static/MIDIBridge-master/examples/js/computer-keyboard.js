@@ -18,11 +18,16 @@ noteOnTime,             // The timestamp when noteOn occurred
 noteOffTime,            // The timestamp when noteOff occurred
 tickTime,               // The timestamp when the metronome tick happened
 messages,
-compensation = 0,     // Delay compensation in ms
+compensation = 0,       // Delay compensation in ms
+distinctFactor = 0.8;   // Value between (0 and 1).
 notesOnList = new Array(),
 notesOffList = new Array(),
 notesOnTimes = new Array(),
 notesOffTimes = new Array();
+
+function clear(){
+    
+}
 
 function dispDataClick(){
     for (var i = 0; i < notesOnList.length; ++i) {
@@ -343,7 +348,7 @@ var metronome = function(opts) {
                     $("#tempo").val(tempo);
 
                     // Set the timedistinction value.
-                    timeDistinction = ((60 / tempo) * 1000);
+                    timeDistinction = ((60 / tempo) * 1000) * distinctFactor;
                     
                     var ticks = parseInt($('#ticks').val(), 10);
                     if (!ticks || ticks < 8) { ticks = 12000; }

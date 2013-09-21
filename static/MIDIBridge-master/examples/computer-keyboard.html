@@ -17,7 +17,10 @@
             <!-- display keyboard mapping -->
             <div id="help-message"></div>
 
-            <div><button onClick="dispDataClick()">Display data</button></div>
+            <div>
+                <button onClick="dispDataClick()">Display data</button>
+                <span><button onClick="clear(){messages.innerHTML = "";}">Clear Output</button></span>
+            </div>
 
             <!-- MIDI messages get displayed here -->
             <div id="messages">Please select a MIDI output<br/></div>
