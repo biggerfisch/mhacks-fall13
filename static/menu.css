@@ -18,7 +18,7 @@ ul#topnav-list{
 
 .topnav-element{
     float: left;
-
+    text-align: center;
 }
 
 a.topnav-link{
