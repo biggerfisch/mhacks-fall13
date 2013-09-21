@@ -2,8 +2,11 @@ from flask import Flask
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-  return 'Hello World!'
+def index(): pass
 
+@app.route('/flask/')
+def goodbye_world():
+    return 'I lied. Hello.'
+  
 if __name__ == '__main__':
-  app.run()
+    app.run()
