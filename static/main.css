@@ -11,6 +11,19 @@ body{
     float: left
 }
 
+.med-textblock{
+    min-height: 200px;
+}
+
+.width-full{
+    width: 1000px;
+}
+
+.width-half{
+    width: 495px;
+    margin-right: 5px;
+}
+
 .profile{
     box-sizing: border-box;
     width: 246px;
