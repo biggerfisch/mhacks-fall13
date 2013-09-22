@@ -19,6 +19,11 @@ noteOffTime,            // The timestamp when noteOff occurred
 tickTime,               // The timestamp when the metronome tick happened
 messages,
 metroTick,
+noteOnMeasure,
+noteOffMeasure,
+noteOnTick,
+noteOffTick,
+metronomePlaying = false,
 metroMeasure = -1,      // THe current measure. Starts at -1 and is added to in the beginning
 compensation = 0,       // Delay compensation in ms
 distinctFactor = 1;     // Value between (0 and 1).
@@ -27,7 +32,10 @@ startList = new Array(),
 lengthList = new Array();
 
 function clearAll(){
-    
+    notesList.length = [];
+    startList.length = [];
+    lengthList.length = [];
+    messages.innerHTML = "";
 }
 
 function dispDataClick(){
@@ -162,18 +170,21 @@ window.addEventListener('load', function() {
 
     // GETS DATA REGARDING IMPORTANT PARTS OF MIDI MESSAGE. 
     function getRelevantMidiData(midiMessageType, noteVal, noteTimeStamp){
-        matchToMetronome(noteTimeStamp);
+        if (!metronomePlaying){
+            return;
+        }
+        matchToMetronome(midiMessageType, noteTimeStamp);
         if (midiMessageType == midiBridge.NOTE_ON)
         {
             notesList.push(noteVal);
-            if (lengthList.length > 0){
+            if (lengthList.length != startList.length){
                 var currTotalPos = metroMeasure * 4 + metroTick;
                 var prevTotalSplit = startList[startList.length - 1].split('.');
                 var prevTotalPos = parseInt(prevTotalSplit[0]) * 4 + parseInt(prevTotalSplit[1]);
                 var oldLen = currTotalPos - prevTotalPos;
                 lengthList.push(oldLen);
             }
-            startList.push(metroMeasure + "." + metroTick);
+            startList.push(noteOnMeasure + "." + noteOnTick);
         }
         else if (midiMessageType == midiBridge.NOTE_OFF)
         {
@@ -189,24 +200,47 @@ window.addEventListener('load', function() {
     }
 
     // Matches the current note timestamp played to a metronome tick
-    function matchToMetronome(noteTimeStamp){
+    function matchToMetronome(midiMessageType, noteTimeStamp){
         var step = (60 / tempo) * 1000;
         // Closer to current tick
         if (Math.abs(tickTime + step - noteTimeStamp) > Math.abs(tickTime - noteTimeStamp))
         {
-            messages.innerHTML += metroTick + "<br/>";
+            // messages.innerHTML += metroTick + "<br/>";
+            // messages.innerHTML += "gOT HERE" + "<br/>";
         }
         else    // Next tick otherwise
         {
-            if (metroTick == 4)
-            { 
-                metroTick = 1;
-            }
-            else
+            // IS GETTING CALLED BOTH WHEN NOTE IS ON AND OFF!!!!!!!!
+            noteOnMeasure = metroMeasure;
+            noteOffMeasure = metroMeasure;
+            noteOnTick = metroTick;
+            noteOffTick = metroTick;
+            if (midiMessageType == midiBridge.NOTE_ON)
             {
-                ++metroTick;
+                if (noteOnTick == 4)
+                {
+                    noteOnMeasure += 1;
+                    noteOnTick = 1;
+                }
+                else
+                {
+                    noteOnTick += 1;
+                }
+                messages.innerHTML += noteOnMeasure + "_" + noteOnTick + "::";
             }
-            messages.innerHTML += metroTick + "<br/>";
+            else if (midiMessageType == midiBridge.NOTE_OFF)
+            {
+                if (noteOffTick == 4)
+                {
+                    noteOffMeasure += 1;
+                    noteOffTick = 1;
+                }
+                else
+                {
+                    noteOffTick += 1;
+                }
+                messages.innerHTML += noteOffMeasure + "_" + noteOffTick + "<br/>";
+            }
         }
     }
 
@@ -285,7 +319,7 @@ var metronome = function(opts) {
             barNum = document.getElementById("barNum");
             metroTick = tick_count % 4;
             // SHOW BAR NUMBER
-            if (tick_count < 4)
+            if (tick_count <= 4)
             {
                 // Set to global var representing tick
                 metroTick = tick_count;
@@ -300,11 +334,16 @@ var metronome = function(opts) {
             {
                 barNum.innerHTML = metroTick;
             }
+
+            // Increase metroMeasure
+            if (metroTick == 1)
+            {
+                metroMeasure += 1;
+            }
+
             // CHANGE BAR NUMBER COLOR
             if (barNum.innerText == "1")
             {
-                // Increase the measure number
-                ++metroMeasure;
                 barNum.style.color = "DarkRed";
             }
             else
@@ -347,6 +386,7 @@ var metronome = function(opts) {
                 "100%": { transform:"R-" + r + " " + x + "," + y, easing: "sinoid", callback: animationDone }
             };
             
+            metronomePlaying = true;
             //animation            
             var ticktock = Raphael.animation(ticktockAnimationParam, interval).repeat(repeats / 2);
             arm.animate(ticktock);
@@ -355,6 +395,7 @@ var metronome = function(opts) {
         stop: function() {
             // Reset the bar number
             document.getElementById("barNum").innerHTML = "<br/>"
+            metronomePlaying = false;
             mn.stop();
             mn.attr("transform", "R0 " + x + "," + y);                
             end_func();
@@ -396,9 +437,12 @@ var metronome = function(opts) {
                     $("#ticks").val(ticks); 
                     
                     m.start(tempo, ticks);
+                    metronomePlaying = true;
                 } else {
                     $(this).html("start");
+                    metroMeasure = -1;
                     m.stop();
+                    metronomePlaying = false;
                 }
             });                         
         }
