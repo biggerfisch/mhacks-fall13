@@ -23,7 +23,8 @@ def not_found(error):
 
 @app.route('/')
 def home_page():
-    return render_template('home.html')
+    #return render_template('home.html')
+    return render_template('computer-keyboard.html')
 
 @app.route('/songs', methods = ['POST'])
 def make_song():
