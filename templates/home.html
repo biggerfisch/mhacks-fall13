@@ -14,12 +14,55 @@
 <div class="relative instructions">
     <p class="highlight-para-instructions center-text">Help</p>
     <div class="width-half highlight-dropdown">
-    To make a recording, use Keys: &lt;insert here&gt; . Press &lt;&gt; when done.<br/>
+    To make a recording, use <br /><div id="help-message"></div>.<br /> Press &lt;&gt; when done.<br/>
     If the applet does not run, try lowering your java security settings in the java control panel.
     </div>
 </div>
 <div class="center-text">
     Code to go here.
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<!-- METRONOME STUFF!!! -->
+<table class="example">
+    <tr>
+        <td><div id="metronome_container"></div></td>
+        <td><div class="status"></div></td>
+    </tr>
+    <tr>
+        <td colspan=2 id="inputs"></td>
+    </tr>
+</table>
+
+<script>
+    /*global $ Raphael soundManager metronome*/
+
+    function tick(t) {
+        // $("<div />").html(t % 2 === 1 ? "Tick" : "Tock").addClass("statusline").appendTo(".status");
+        // $("#count").html(t);    
+    }
+
+    function done() {s
+    //     $("<div />").html("Done!").addClass("statusline").css("background-color", "#FFFF99").appendTo(".status");
+         $("#startstop").html("start");
+    }
+
+    var paper = Raphael("metronome_container", 200, 200);
+
+    var m = metronome({
+        len: 200,
+        angle: 20,
+        tick: tick,
+        complete: done,
+        paper: paper,
+        audio: "{{ url_for('static', filename='tick.wav') }}"
+    });
+
+    m.make_input("#inputs");
+
+    m.shapes().outline.attr("fill", "#00A30F");
+    m.shapes().arm.attr("stroke", "#EEE");
+</script>
+<!-- END METRONOME STUFF!!! -->
 
 {% endblock %}
