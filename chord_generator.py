@@ -192,7 +192,7 @@ def getFirstChord(notesInMeasure):
     if not_shitty_chords:
         return weightedFirstChordChoice(not_shitty_chords)
 
-def ChordGenerator(ListOfNotes,ListofTimes):
+def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
     #List of notes will be between 48 and 64 as constrained by client-side input
     #THIS COMMENT IS IMPORTANT ^^^
 
