@@ -62,7 +62,8 @@ def make_song():
     
     MidiFileCreator(dbMelody,dbSong)
 
-    return jsonify({'token': token}), 201
+    return jsonify({'token': token,
+    'chords': chords}), 201
 
 @app.route('/songs/<token>')
 def fetch_song(token=None):
