@@ -186,6 +186,8 @@ def getFirstChord(notesInMeasure):
     if not_shitty_chords:
         return weightedFirstChordChoice(not_shitty_chords)
 
+
+
 def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
     #List of notes will be between 48 and 64 as constrained by client-side input
     #THIS COMMENT IS IMPORTANT ^^^
@@ -196,17 +198,17 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
 
     #Returns One Chord per measure. Total of 8 eighth notes per measure
     #No key changes in Melody aka one Mode.
-    global ChordDictionary
-    global first_json
-    if not ChordDictionary:       
-        path = 'data/json-responses/'
-        for root, dirs, files in os.walk(path):
-            for name in files:
-                jsondata = open(path + name)
-                ChordDictionary[name] = json.load(jsondata)
-        first_chord_data_path = 'data/first_json'
-        first_json_data = open(first_chord_data_path)
-        first_json = json.load(first_json_data)
+    # global ChordDictionary
+    # global first_json
+    # if not ChordDictionary:       
+    #     path = 'data/json-responses/'
+    #     for root, dirs, files in os.walk(path):
+    #         for name in files:
+    #             jsondata = open(path + name)
+    #             ChordDictionary[name] = json.load(jsondata)
+    #     first_chord_data_path = 'data/first_json'
+    #     first_json_data = open(first_chord_data_path)
+    #     first_json = json.load(first_json_data)
 
     numMeasures = getNumberofMeasures(ListofTimes);
     ListOfChords = [];
@@ -242,7 +244,7 @@ def MidiFileCreator(melody,song):
     chord_times = song['chord_times']
     chord_center = song['chord_center']
     ListOfRelativeChordVoicings = song['chord_pitches']
-
+    token = melody['token']
     MyMIDI = MIDIFile(1)
     track = 0
     channel = 0
@@ -252,15 +254,19 @@ def MidiFileCreator(melody,song):
     MyMIDI.addTrackName(track,time,token)
     MyMIDI.addTempo(track,time,bpm)
     #Sends Chords to MIDI
+    root = int(chord_center)
     for chord in ListOfRelativeChordVoicings:
         for note in chord:
-            MyMIDI.addNote(track,channel,int(note),time,duration,volume)
+            Intnote = int(note) + root
+            MyMIDI.addNote(track,channel,Intnote,time,duration,volume)
+            print(note)
         time = time + 4   
     i = 0
     for note in pitches:
-        MyMIDI.addNote(track,channel,int(note),times[i],durations[i],volume)
+        MyMIDI.addNote(track,channel,note,times[i],durations[i],volume)
         i = i + 1
-    binfile = open("statics/songs/" + token + ".mid", 'wb')
+        print(note)
+    binfile = open("/home/mhacks/mhacks-fall13/static/songs/" + token + ".mid", 'wb')
     MyMIDI.writeFile(binfile)
     binfile.close()
     return "blah"
