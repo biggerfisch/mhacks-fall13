@@ -208,7 +208,7 @@ window.addEventListener('load', function() {
                 var oldLen = currTotalPos - prevTotalPos;
                 lengthList.push(oldLen);
             }
-            startList.push(noteOnMeasure + "." + noteOnTick);
+            startList.push(noteOnMeasure * 4 + noteOnTick - 1);
         }
         else if (midiMessageType == midiBridge.NOTE_OFF)
         {
