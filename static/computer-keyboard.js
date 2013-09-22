@@ -201,10 +201,9 @@ window.addEventListener('load', function() {
         if (midiMessageType == midiBridge.NOTE_ON)
         {
             notesList.push(noteVal);
-            if (lengthList.length != startList.length){
+            if (lengthList.length != startList.length && startList.length != 0){
                 var currTotalPos = noteOnMeasure * 4 + noteOnTick;
-                var prevTotalSplit = startList[startList.length - 1].split('.');
-                var prevTotalPos = parseInt(prevTotalSplit[0]) * 4 + parseInt(prevTotalSplit[1]);
+                var prevTotalPos = startList[startList.length - 1];
                 var oldLen = currTotalPos - prevTotalPos;
                 lengthList.push(oldLen);
             }
