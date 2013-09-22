@@ -235,10 +235,7 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
 
     return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
 
-def MidiFileCreator(melody,song):
-    
-    abort(401)
-    
+def MidiFileCreator(melody,song):  
     bpm = melody['bpm']
     pitches = melody['pitches']
     parts = [t.split('.') for t in melody['times']]
