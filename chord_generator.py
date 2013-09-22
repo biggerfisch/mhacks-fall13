@@ -6,7 +6,7 @@ import os
 import timeit
 import re
 from itertools import cycle, islice
-
+#THIS SHIT WORKS HOLY SHIT IT WORKS DON'T TOUCH IT. 
 print("Loading shit")
 ChordDictionary = {}
 path = 'data/json-responses/'
@@ -120,6 +120,7 @@ def getNotesInMeasure(ListOfNotes,ListofTimes,MeasureNumber):
             endOfMeasure = endOfMeasure + 1
     for noteIndex in range(startOfMeasure,endOfMeasure):
         notesInMeasure.append(ListOfNotes[noteIndex])
+    print("123")
     return notesInMeasure
 
 def noteisNotInChord(note,Chord):
@@ -134,10 +135,9 @@ def noteIsMajorSecond(rootOfChord,note):
     return False
 
 def chordFits(Chord,notesInMeasure,root):
+    print("138")
     numberofConflicts = 0
     Chord = [note + root for note in Chord]
-    print(Chord)
-    print(notesInMeasure)
     for note in notesInMeasure:
         for tone in Chord:
             if noteisNotInChord(note,Chord) and not noteIsMajorSecond(root,note):
@@ -223,4 +223,10 @@ def ChordGenerator(ListOfNotes,ListofTimes):
 
     return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
 
-print(ChordGenerator([49,49,52,51],[2,2,2,2]))
+def chordListAndLengthOutputer(ListOfNotes,ListofTimes):
+    (NoteList,root) = ChordGenerator(ListOfNotes,ListofTimes)
+    NoteList = [note + root for note in NoteList]  
+#Testing Area:
+ListOfNotes = [48,50,51,50,48,48,50,51,55,50,51,50]
+ListofTimes = [1,1,2,2,2,1,1,1,1,1,1,2]
+print(ChordGenerator(ListOfNotes,ListofTimes))
