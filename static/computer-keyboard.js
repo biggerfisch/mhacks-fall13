@@ -173,7 +173,7 @@ window.addEventListener('load', function() {
         midiAccess = _midiAccess;
         outputs = midiAccess.enumerateOutputs();
 
-        output = getOutput(midiAccess.enumerateOutputs()[0]);
+        output = midiAccess.getOutput(midiAccess.enumerateOutputs()[0]);
 
         if(deviceId == -1){
                 messageDiv.innerHTML = msgSelectOutput;
