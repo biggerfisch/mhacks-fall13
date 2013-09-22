@@ -207,7 +207,9 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
 
     #Returns One Chord per measure. Total of 8 eighth notes per measure
     #No key changes in Melody aka one Mode.
-
+    
+    abort(400)
+    
     numMeasures = getNumberofMeasures(ListofTimes);
     ListOfChords = [];
     firstChord, root = getFirstChord(getNotesInMeasure(ListOfNotes,ListofTimes,0))
