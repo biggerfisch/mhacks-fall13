@@ -120,7 +120,6 @@ def getNotesInMeasure(ListOfNotes,ListofTimes,MeasureNumber):
             endOfMeasure = endOfMeasure + 1
     for noteIndex in range(startOfMeasure,endOfMeasure):
         notesInMeasure.append(ListOfNotes[noteIndex])
-    print("123")
     return notesInMeasure
 
 def noteisNotInChord(note,Chord):
@@ -135,7 +134,6 @@ def noteIsMajorSecond(rootOfChord,note):
     return False
 
 def chordFits(Chord,notesInMeasure,root):
-    print("138")
     numberofConflicts = 0
     Chord = [note + root for note in Chord]
     for note in notesInMeasure:
@@ -214,6 +212,7 @@ def ChordGenerator(ListOfNotes,ListofTimes):
         
         while(not chordFits(ChordIntoNotes,notesInMeasure,root)):
             tempChord = weightedChordChoice(data['children'])
+            ChordIntoNotes = voice_chord(tempChord['SInED'])
         # pprint(tempChord)
         ChordIntoNotes = voice_chord(tempChord['SInED']) 
         # newListToMakeShitMakeSense = [x+1 for x in ChordIntoNotes]
