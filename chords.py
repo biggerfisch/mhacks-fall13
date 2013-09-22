@@ -53,7 +53,7 @@ def about_page():
 
 @app.route('/keyboard/')
 def keyboard_page():
-    return render_template('computer_keyboard.html')
+    return render_template('computer-keyboard.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
