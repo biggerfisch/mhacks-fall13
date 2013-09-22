@@ -50,7 +50,7 @@ function SendData(){
         dataType: "json",
         success: function(response){
             console.log(JSON.stringify(response));
-            alert(JSON.stringify(response));
+            window.location = url + "/" + response[token];
         }
     });
 }
