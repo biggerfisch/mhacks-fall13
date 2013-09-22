@@ -112,12 +112,6 @@ def getNotesInMeasure(ListOfNotes,ListofTimes,MeasureNumber):
     BeatPosition = 0
     startOfMeasure = 0
     endOfMeasure = 0
-    # while(BeatPosition<(8*(MeasureNumber+1))+7):
-    #     BeatPosition = BeatPosition + ListofTimes[startIndex]
-    #     if BeatPosition<8*(MeasureNumber+1):
-    #         startOfMeasure= startOfMeasure + 1
-    #         print(startIndex)
-    #     endOfMeasure = endOfMeasure + 1
     for beatLength in ListofTimes:
         BeatPosition = BeatPosition + beatLength
         if(BeatPosition <= 8*MeasureNumber):
@@ -141,14 +135,17 @@ def noteIsMajorSecond(rootOfChord,note):
 
 def chordFits(Chord,notesInMeasure,root):
     numberofConflicts = 0
+    Chord = [note + root for note in Chord]
+    print(Chord)
+    print(notesInMeasure)
     for note in notesInMeasure:
         for tone in Chord:
             if noteisNotInChord(note,Chord) and not noteIsMajorSecond(root,note):
-                if abs(note - tone) == 1 or abs(note - tone) == 11:
+                if abs(note - tone) == 1 or abs(note - tone) == 11 or abs(note - tone) == 13 or abs(note - tone) == 23:
                     return False
-                if abs(note - tone) == 6:
+                if abs(note - tone) == 6 or abs(note - tone) == 18: #or abs(note - tone) == 13 or abs(note - tone) == 23::
                     return False
-                if abs(note - tone) == 8 or abs(note - tone) == 4:
+                if abs(note - tone) == 8 or abs(note - tone) == 4 or abs(note - tone) == 20 or abs(note - tone) == 26:
                     return False
                 if abs(note - tone) == 2 or abs(note - tone) == 10:
                     numberofConflicts = numberofConflicts + 1
@@ -184,14 +181,6 @@ def weightedFirstChordChoice(chords):
         upto += float(chord[0]['prob'])
     assert False, "Shouldn't get here"
 
-
-# def convertChordToNoteList(Chord,rootOfSong,mode):
-#     ChordNoteList = []
-#     #Use Charlie's shit here
-#     chordNumber = Chord['SInED']
-
-#     return chord(mode,)
-
 def getFirstChord(notesInMeasure):
     not_shitty_chords = []
     for i in range(12):
@@ -201,16 +190,15 @@ def getFirstChord(notesInMeasure):
         return weightedFirstChordChoice(not_shitty_chords)
 
 def ChordGenerator(ListOfNotes,ListofTimes):
+    #List of notes will be between 48 and 64 as constrained by client-side input
+    #THIS COMMENT IS IMPORTANT ^^^
+
     #Generate all possible starting chords
     #Try them in all 12 keys
     #first_json probablities of all starting chords
 
     #Returns One Chord per measure. Total of 8 eighth notes per measure
     #No key changes in Melody aka one Mode.
-    # mode = aeolian
-     #getKey(ListOfNotes,ListofTimes,root) #Gets mode from notes
-    #listofPossibleChords = getListOfChords(mode) #Generates chords from mode
-
     numMeasures = getNumberofMeasures(ListofTimes);
     ListOfChords = [];
     firstChord, root = getFirstChord(getNotesInMeasure(ListOfNotes,ListofTimes,0))
@@ -234,3 +222,5 @@ def ChordGenerator(ListOfNotes,ListofTimes):
         i = i + '.' + convertToFilePathSyntax(tempChord['SInED'])
 
     return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
+
+print(ChordGenerator([49,49,52,51],[2,2,2,2]))
