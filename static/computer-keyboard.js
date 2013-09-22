@@ -47,6 +47,7 @@ function SendData(){
         url: "http://biggerfisch.us.to/songs",
         contentType: 'application/json',
         data: JSON.stringify(d),
+        alert(data);
         dataType: "json",
         success: function(response){
             console.log(JSON.stringify(response));
