@@ -92,3 +92,16 @@ body{
 .relative{
     position: relative;
 }
+
+#keyboard-io{
+    float:left;
+    margin-top: 50px;
+}
+
+#metro-wrapper{
+    float: right;
+    margin-top: 50px;
+    width: 250px;
+    overflow: hidden;
+    
+}
