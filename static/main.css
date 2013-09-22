@@ -73,7 +73,8 @@ body{
 
 .highlight-para-instructions{
     background-color: #00CC00;
-    padding-top: 15px;
+    padding-top: 10px;
+    padding-left: -3px;
     font-size: 18px;
     font-weight: bold;
     width: 50px;
