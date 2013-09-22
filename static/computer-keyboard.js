@@ -173,6 +173,16 @@ window.addEventListener('load', function() {
         midiAccess = _midiAccess;
         outputs = midiAccess.enumerateOutputs();
 
+        output = getOutput(midiAccess.enumerateOutputs()[0]);
+
+        if(deviceId == -1){
+                messageDiv.innerHTML = msgSelectOutput;
+        }else{
+            //messageDiv.innerHTML = "<br/><br/><br/><span class='device-type'>connected: </span><div>" + output.deviceName + "</div>";
+            messageDiv.innerHTML = msgKeyMapping;
+        }
+
+        /*
         //create dropdown menu for MIDI outputs and add an event listener to the change event
         midiBridge.createMIDIDeviceSelector(selectOutput,outputs,"ouput",function(deviceId){
             
@@ -188,6 +198,7 @@ window.addEventListener('load', function() {
                 messageDiv.innerHTML = msgKeyMapping;
             }
         });
+        */
         
         connectKeyboard();
     });
