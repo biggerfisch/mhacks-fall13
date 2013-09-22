@@ -25,12 +25,15 @@ def home_page():
 
 @app.route('/songs', methods = ['POST'])
 def make_song():
-    if not request.json or not 'notes' in request.json:
+    if not request.json:
         abort(400)
     token = rand_token()
     melody = {
             'token': token,
-            'notes': request.json['notes']
+            'bpm': request.json['bpm'],
+            'pitches': request.json['pitches'],
+            'times': request.json['times'],
+            'durations': request.json['durations']
     }
     db.melodies.insert(melody)
     return jsonify({'token': token}), 201

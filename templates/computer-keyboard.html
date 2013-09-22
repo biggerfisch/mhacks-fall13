@@ -64,7 +64,7 @@
                     tick: tick,
                     complete: done,
                     paper: paper,
-                    audio: "tick.wav?raw=true"
+                    audio: "{{ url_for('static', filename='tick.wav') }}"
                 });
 
                 m.make_input("#inputs");
