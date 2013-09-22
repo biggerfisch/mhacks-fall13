@@ -7,22 +7,9 @@ import timeit
 import re
 from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
-from pymongo import MongoClient
 
-client = MongoClient()
-db = client['chordinator']
-print("Loading shit")
 ChordDictionary = {}
-path = 'data/json-responses/'
-for root, dirs, files in os.walk(path):
-    for name in files:
-        jsondata = open(path + name)
-        ChordDictionary[name] = json.load(jsondata)
-first_chord_data_path = 'data/first_json'
-first_json_data = open(first_chord_data_path)
-first_json = json.load(first_json_data)
-print("Shit loaded")
-
+first_json = {}
 def sum_n(series, n):
     return sum(islice(series,0,n))
 
@@ -209,6 +196,18 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
 
     #Returns One Chord per measure. Total of 8 eighth notes per measure
     #No key changes in Melody aka one Mode.
+    global ChordDictionary
+    global first_json
+    if not ChordDictionary:       
+        path = 'data/json-responses/'
+        for root, dirs, files in os.walk(path):
+            for name in files:
+                jsondata = open(path + name)
+                ChordDictionary[name] = json.load(jsondata)
+        first_chord_data_path = 'data/first_json'
+        first_json_data = open(first_chord_data_path)
+        first_json = json.load(first_json_data)
+
     numMeasures = getNumberofMeasures(ListofTimes);
     ListOfChords = [];
     firstChord, root = getFirstChord(getNotesInMeasure(ListOfNotes,ListofTimes,0))
@@ -234,17 +233,15 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
 
     return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
 
-def MidiFileCreator(token):
-    melody = db.melodies.find_one({'token': token})
-    bpm = db.melody['bpm']
-    pitches = db.melody['pitches']
-    times = db.melody['times']
-    durations = db.melody['durations']
-    song = db.songs.find_one({'token': token})
-    chord_pitches = db.song['chord_pitches']
-    chord_times = db.song['chord_times']
-    chord_center = db.song['chord_center']
-    ListOfRelativeChordVoicings = db.songs['chord_pitches']
+def MidiFileCreator(melody,song):
+    bpm = melody['bpm']
+    pitches = melody['pitches']
+    times = melody['times']
+    durations = melody['durations']
+    chord_pitches = song['chord_pitches']
+    chord_times = song['chord_times']
+    chord_center = song['chord_center']
+    ListOfRelativeChordVoicings = song['chord_pitches']
 
     MyMIDI = MIDIFile(1)
     track = 0
@@ -266,17 +263,13 @@ def MidiFileCreator(token):
     binfile = open("statics/songs/" + token + ".mid", 'wb')
     MyMIDI.writeFile(binfile)
     binfile.close()
+    return "blah"
 
 #Testing Area:
-# Times = [0,1,2,3,4]
+# Times = [4,5,6,7,8]
 # Notes = [48,52,55,52,48]
 # Durations = [1,1,1,1,4]
-# # # #getNotesInMeasure(Notes,Times,0)
-# (Chord,root) = (ChordGenerator(Notes,Durations,Times))
-# print(Chord[0])
-# print(chordFits(Chord[0],Notes,root))
-# print(getFirstChord(Notes))
-
-
-
-
+# # # # #getNotesInMeasure(Notes,Times,0)
+# print(ChordGenerator(Notes,Durations,Times))
+#print(chordFits(Chord[0],Notes,root))
+#print(getFirstChord(Notes))
