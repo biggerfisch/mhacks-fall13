@@ -80,10 +80,7 @@ body{
     height: 50px;
     border-radius: 25px;
     
-    position:relative;
-    
-    left: 0px;
-    top: 0px;
+
 }
 
 .relative.instructions:hover .highlight-dropdown{
