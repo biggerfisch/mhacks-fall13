@@ -62,7 +62,7 @@ def make_song():
 
 @app.route('/songs/<token>')
 def fetch_song(token):
-    song = db.melodies.find_one({'token': token})
+    song = db.melodies.find({'token': token})
     if song:
         #return jsonify({'notes': song['notes']})
         return render_template('song.html', token=token)
