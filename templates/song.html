@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}About - {% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block navigation%}
+    {{ super() }}
+{% endblock %}
+{% block main_block %}
+
+<div class="center center-text">
+    <object data="{{ url_for('static',filename="songs/{{ token }}.mid">
+    
+    If you're seeing this, you don't have a MIDI player
+on your computer.
+
+    </object>
+</div>
+
+{% endblock %}
