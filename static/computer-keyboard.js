@@ -42,7 +42,6 @@ function SendData(){
         times: startList,
         durations: lengthList
     }
-    alert(d);
     jQuery.ajax({
         type: "POST",
         url: "http://biggerfisch.us.to/songs",
@@ -437,8 +436,8 @@ var metronome = function(opts) {
             $("<div />", {
                 html:   "<span>tempo: </span>" + 
                         "<input class='metr_input' type='text' id='tempo' value='120' />" +
-                        "<span>ticks: </span>" +
-                        "<input class='metr_input' type='text' id='ticks' value='12000' />" +
+                        // "<span>ticks: </span>" +
+                        // "<input class='metr_input' type='text' id='ticks' value='12000' />" +
                         "<button id='startstop'>start</button>"
             }).appendTo(el);
             
@@ -458,10 +457,12 @@ var metronome = function(opts) {
                     // Set the timedistinction value.
                     timeDistinction = ((60 / tempo) * 1000) * distinctFactor;
                     
-                    var ticks = parseInt($('#ticks').val(), 10);
-                    if (!ticks || ticks < 8) { ticks = 12000; }
-                    $("#ticks").val(ticks); 
+                    // var ticks = parseInt($('#ticks').val(), 10);
+                    // if (!ticks || ticks < 8) { ticks = 12000; }
+                    // $("#ticks").val(ticks); 
                     
+                    ticks = 12000;
+
                     m.start(tempo, ticks);
                     metronomePlaying = true;
                 } else {
