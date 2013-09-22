@@ -6,7 +6,7 @@ import os
 import timeit
 import re
 from itertools import cycle, islice
-from midiutil.MidiFile import MIDIFile
+#from midiutil.MidiFile import MIDIFile
 
 ChordDictionary = {}
 first_json = {}
