@@ -142,7 +142,7 @@ def noteIsMajorSecond(rootOfChord,note):
 def chordFits(Chord,notesInMeasure,root):
     numberofConflicts = 0
     NewChord = []
-    print(Chord)
+    # print(Chord)
     for note in Chord:
         # print "This is 147"
         # print(note)
@@ -269,11 +269,12 @@ def MidiFileCreator(token):
 
 #Testing Area:
 # Times = [0,1,2,3,4]
-# Notes = [49,53,56,53,49]
+# Notes = [48,52,55,52,48]
 # Durations = [1,1,1,1,4]
-# # #getNotesInMeasure(Notes,Times,0)
+# # # #getNotesInMeasure(Notes,Times,0)
 # (Chord,root) = (ChordGenerator(Notes,Durations,Times))
-# # print(chordFits(Chord,Notes,root))
+# print(Chord[0])
+# print(chordFits(Chord[0],Notes,root))
 # print(getFirstChord(Notes))
 
 
