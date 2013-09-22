@@ -39,7 +39,7 @@ def make_song():
             'times': request.json['times'],
             'durations': request.json['durations']
     }
-    #db.melodies.insert(melody)
+    db.melodies.insert(melody)
 
     pairs = [t.split('.') for t in request.json['times']]
     times = [4*int(l)+int(r) - 1 for l,r in pairs]
@@ -56,7 +56,6 @@ def make_song():
             'chord_center': center
     }
     db.songs.insert(song)
-    db.melodies.insert(melody)
     
     MidiFileCreator(token)
 
