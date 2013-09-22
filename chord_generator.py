@@ -245,39 +245,3 @@ def ChordGenerator(ListOfNotes,ListofTimes):
         i = i + '.' + convertToFilePathSyntax(tempChord['SInED'])
 
     return ListOfChords,root #One Chord Per Measure
-
-#main shit:
-# ChordDictionary = {}
-# path = '/Users/vikas/Documents/Mhacks-Fall13/mhacks-fall13/data/json-responses/'
-# for root, dirs, files in os.walk(path):
-#     for name in files:
-#         jsondata = open(path + name)
-#         ChordDictionary[name] = json.load(jsondata)
-# #print(ChordDictionary[i])
-ListOfNotes = [60,62,63,62,60,60,62,63,67,62,63,60]
-ListOfNotes = [note - 11 for note in ListOfNotes]
-pprint(ListOfNotes)
-ListofTimes = [1,1,2,2,2,1,1,1,1,1,1,2]
-# #pprint(getNumberofMeasures(ListofTimes))
-# #ChordGenerator(ListOfNotes,ListofTimes)
-# numMeasures = getNumberofMeasures(ListofTimes);
-# ListOfChords = [];
-# i = '6' #str(getFirstChord(getNotesInMeasure(ListOfNotes,ListofTimes,0),mode))
-# firstChord = ChordDictionary[i]['parent']
-# #pprint(firstChord)
-# #JsonResponseslocation = '/Users/vikas/Documents/Mhacks-Fall13/mhacks-fall13/data/json-responses/'
-# #You Baka, make this relative path shit.
-# for numba in range(numMeasures-1):
-#     num = numba + 1 
-#     data = ChordDictionary[i]
-#     notesInMeasure = getNotesInMeasure(ListOfNotes,ListofTimes,num);
-#     tempChord = weightedChordChoice(data['children'])    
-#     while(not chordFits(voice_chord(tempChord['SInED']),notesInMeasure)):
-#         tempChord = weightedChordChoice(data['children'])
-#     #pprint(tempChord)
-#     print(voice_chord(tempChord['SInED']))
-#     ListOfChords.append(tempChord)
-#     i = i + '.' + convertToFilePathSyntax(tempChord['SInED'])
-print(ChordGenerator(ListOfNotes,ListofTimes))
-
-
