@@ -11,10 +11,7 @@
     {{ super() }}
 {% endblock %}
 {% block main_block %}
-<div id="keyboard-io">
-    <!-- dropdown menu for selecting a MIDI output -->
-    <select id="outputs"></select>
-</div>
+
 <div class="relative instructions">
     <p class="highlight-para-instructions center-text">Help</p>
     <div class="width-half highlight-dropdown">
@@ -22,6 +19,12 @@
     If the applet does not run, try lowering your java security settings in the java control panel.
     </div>
 </div>
+
+<div id="keyboard-io">
+    <!-- dropdown menu for selecting a MIDI output -->
+    <select id="outputs"></select>
+</div>
+
 <div id="metro-wrapper">
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
