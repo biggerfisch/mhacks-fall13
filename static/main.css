@@ -96,8 +96,8 @@ body{
 #keyboard-io{
     position: absolute;
     
-    top: 00px;
-    left: 100px;
+    top: 100px;
+    left: 0px;
 }
 
 #metro-wrapper{
