@@ -50,6 +50,10 @@ def home_page2():
 @app.route('/about/')
 def about_page():
     return render_template('about.html')
+
+@app.route('/keyboard/')
+def keyboard_page():
+    return render_template('computer_keyboard.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
