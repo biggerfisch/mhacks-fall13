@@ -172,7 +172,14 @@ window.addEventListener('load', function() {
         
         midiAccess = _midiAccess;
         outputs = midiAccess.enumerateOutputs();
+        if (outputs.length <= 0)
+        {
+            alert("No internalmidi devices detected!");
+        }
+        // Connect to first output device
+        output = MIDIAccess.getOutput(MIDIAccess.enumerateOutputs()[0]);
 
+        /*
         //create dropdown menu for MIDI outputs and add an event listener to the change event
         midiBridge.createMIDIDeviceSelector(selectOutput,outputs,"ouput",function(deviceId){
             
@@ -188,6 +195,7 @@ window.addEventListener('load', function() {
                 messageDiv.innerHTML = msgKeyMapping;
             }
         });
+        */
         
         connectKeyboard();
     });
