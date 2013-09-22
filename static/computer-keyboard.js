@@ -50,7 +50,7 @@ function SendData(){
         dataType: "json",
         success: function(response){
             console.log(JSON.stringify(response));
-            window.location = "http://biggerfisch.us.to/songs/" + response[token];
+            window.location = "http://biggerfisch.us.to/songs/" + response["token"];
         }
     });
 }
