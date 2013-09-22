@@ -30,7 +30,7 @@ def make_song():
     token = rand_token()
     melody = {
             'token': token,
-            'bpm': reques.json['bpm'],
+            'bpm': request.json['bpm'],
             'pitches': request.json['pitches'],
             'times': request.json['times'],
             'durations': request.json['durations']
