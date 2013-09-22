@@ -57,7 +57,7 @@ def make_song():
     }
     db.songs.insert(song)
     
-    #MidiFileCreator(melody,song)
+    MidiFileCreator(melody,song)
 
     return jsonify({'token': token}), 201
 
