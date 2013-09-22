@@ -73,7 +73,6 @@ window.addEventListener('load', function() {
     slider.addEventListener("stopDrag", function(value) {
         sequencer.play()
     });
-    */
 
   
     //add a program select dropdown menu and add an event listener to the change event
@@ -83,7 +82,7 @@ window.addEventListener('load', function() {
         }
     });
     
-   
+   */
     
     midiBridge.init(function(_midiAccess){
         
