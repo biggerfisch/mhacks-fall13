@@ -42,6 +42,7 @@ function SendData(){
         times: startList,
         durations: lengthList
     }
+    alert(d);
     jQuery.ajax({
         type: "POST",
         url: "http://biggerfisch.us.to/songs",
