@@ -251,10 +251,12 @@ def MidiFileCreator(token):
     for chord in ListOfRelativeChordVoicings:
         for note in chord:
             MyMIDI.addNote(track,channel,int(note),time,duration,volume)
-        time = time + 1
-    binfile = open("statics/songs/" + token + ".mid", 'wb')
+        time = time + 4   
+    i = 0
     for note in pitches:
-        MyMIDI.addNote
+        MyMIDI.addNote(track,channel,int(note),times[i],durations[i],volume)
+        i = i + 1
+    binfile = open("statics/songs/" + token + ".mid", 'wb')
     MyMIDI.writeFile(binfile)
     binfile.close()
 
