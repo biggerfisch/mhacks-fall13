@@ -31,6 +31,24 @@ notesList = new Array(),
 startList = new Array(),
 lengthList = new Array();
 
+function SendData(){
+    if (notesList.length == 0){
+        return;
+    }
+    jQuery.ajax({
+    type: "POST",
+    url: "http://biggerfisch.us.to/songs",
+    contentType: 'application/json',
+    data: JSON.stringify(notesList),
+    dataType: "json",
+    success: function(response){
+    console.log("HERP DERP");
+            console.log(JSON.stringify(response));
+            alert(JSON.stringify(response));
+        }
+    });
+}
+
 function clearAll(){
     notesList.length = [];
     startList.length = [];
