@@ -1,13 +1,13 @@
 <!doctype html>
 <html>
     <head>
-        <title>midi bridge</title>
+        <title>Chordinator</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="lib/MIDIBridge.js"></script>     
-        <script type="text/javascript" src="lib/MIDIDeviceSelector.js"></script>     
-        <script type="text/javascript" src="js/computer-keyboard.js"></script>
-        <link rel="stylesheet" media="screen" href="css/reset.css"/>
-        <link rel="stylesheet" media="screen" href="css/midibridge.css"/>
+        <script type="text/javascript" src="{{ url_for('static', filename='MIDIBridge.js') }}"></script>     
+        <script type="text/javascript" src="{{ url_for('static', filename='MIDIDeviceSelector.js') }}"></script>     
+        <script type="text/javascript" src="{{ url_for('static', filename='computer-keyboard.js') }}"></script>
+        <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='reset.css') }}"/>
+        <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='midibridge.css') }}"/>
     </head>
     <body>
         <div id="content">
@@ -64,7 +64,7 @@
                     tick: tick,
                     complete: done,
                     paper: paper,
-                    audio: "tick.wav?raw=true"
+                    audio: "{{ url_for('static', filename='tick.wav') }}"
                 });
 
                 m.make_input("#inputs");

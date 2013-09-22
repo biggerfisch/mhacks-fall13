@@ -25,12 +25,15 @@ def home_page():
 
 @app.route('/songs', methods = ['POST'])
 def make_song():
-    if not request.json or not 'notes' in request.json:
+    if not request.json:
         abort(400)
     token = rand_token()
     melody = {
             'token': token,
-            'notes': request.json['notes']
+            'bpm': request.json['bpm'],
+            'pitches': request.json['pitches'],
+            'times': request.json['times'],
+            'durations': request.json['durations']
     }
     db.melodies.insert(melody)
     return jsonify({'token': token}), 201
@@ -42,14 +45,18 @@ def fetch_song(token):
         return jsonify({'notes': song['notes']})
     else:
         abort(404)
-    
-@app.route('/home')
-def home_page2():
-    return render_template('home.html')
 
 @app.route('/about/')
 def about_page():
     return render_template('about.html')
+
+@app.route('/keyboard/')
+def keyboard_page():
+    return render_template('computer-keyboard.html')
+
+@app.route('/playback/')
+def playback_page():
+    return render_template('play-midifile.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
