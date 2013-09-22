@@ -14,7 +14,7 @@
  * 
  */
 
- 
+
 
 window.addEventListener('load', function() {
 
@@ -31,7 +31,7 @@ window.addEventListener('load', function() {
     chooseFile = document.getElementById("choose-file"),
     info = document.getElementById("info"),
     lastMessage = document.getElementById("last-message"),
-    uploadUrl = "php/midiToBase64.php",
+    uploadUrl = "midiToBase64.php",
     duration,position; 
     
     
@@ -53,13 +53,12 @@ window.addEventListener('load', function() {
 
     btnStop.addEventListener("click", function() {
         sequencer.stop();
-        slider.setPercentage(0);
-        info.getElementsByTagName("span")[7].innerHTML = "0:00:000";
+        //slider.setPercentage(0);
+        //info.getElementsByTagName("span")[7].innerHTML = "0:00:000";
         lastMessage.innerHTML = "";
     }, false);
     
-   
-    
+    /*
     //setup song position slider
     slider = midiBridge.createSlider("position", 500, 8, 0, 100, 0);
     
@@ -74,7 +73,7 @@ window.addEventListener('load', function() {
     slider.addEventListener("stopDrag", function(value) {
         sequencer.play()
     });
-    
+    */
 
   
     //add a program select dropdown menu and add an event listener to the change event
@@ -112,6 +111,7 @@ window.addEventListener('load', function() {
             }
             
             info.innerHTML = "<span class='label'>file:</span> <span class='value'>" + args.fileName + "</span> ";
+            lastMessage.innerHTML = args.fileName;
             info.innerHTML += "<span class='label'>length:</span><span class='value'>" + midiBridge.formatMicroseconds(args.microsecondLength) + "</span> ";
             info.innerHTML += "<span class='label'>ticks:</span><span class='value'>" + args.tickLength + "</span> ";
             info.innerHTML += "<span class='label'>position:</span><span id='time' class='value'>0:00:000</span>";
@@ -124,9 +124,9 @@ window.addEventListener('load', function() {
 
         sequencer.addEventListener("midimessage",function(e){
             lastMessage.innerHTML = e.toString() + "<br/>";
-            var timeStamp = parseInt(e.timeStamp);
-            slider.setPercentage(((timeStamp / 1000) >> 0) / duration, false);
-            position.innerHTML = midiBridge.formatMicroseconds(timeStamp);
+            //var timeStamp = parseInt(e.timeStamp);
+            //slider.setPercentage(((timeStamp / 1000) >> 0) / duration, false);
+            //position.innerHTML = midiBridge.formatMicroseconds(timeStamp);
             if(output){
                 output.sendMIDIMessage(e);
             }
