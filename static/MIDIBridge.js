@@ -67,7 +67,7 @@
     filterCommands = null,//these are the command codes that get filtered; the midibridge will not pass them on to your application
     midiCommands = [],//all existing command codes
     noteNames = {},
-    javaDir = "lib",//directory of the applet, relative to the directory of the html file
+    javaDir = "../static/",//directory of the applet, relative to the directory of the html file
     debug = false,
     onReady = null,
     onError = null,  
