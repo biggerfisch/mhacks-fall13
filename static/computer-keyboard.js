@@ -175,12 +175,8 @@ window.addEventListener('load', function() {
 
         output = midiAccess.getOutput(midiAccess.enumerateOutputs()[0]);
 
-        if(deviceId == -1){
-                messageDiv.innerHTML = msgSelectOutput;
-        }else{
-            //messageDiv.innerHTML = "<br/><br/><br/><span class='device-type'>connected: </span><div>" + output.deviceName + "</div>";
-            messageDiv.innerHTML = msgKeyMapping;
-        }
+        //messageDiv.innerHTML = "<br/><br/><br/><span class='device-type'>connected: </span><div>" + output.deviceName + "</div>";
+        messageDiv.innerHTML = msgKeyMapping;
 
         /*
         //create dropdown menu for MIDI outputs and add an event listener to the change event
