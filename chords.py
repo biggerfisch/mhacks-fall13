@@ -25,12 +25,12 @@ def home_page():
 
 @app.route('/songs', methods = ['POST'])
 def make_song():
-    if not request.json or not 'bpm' in request.json or not 'pitches' in request.json or not 'times' in request.json or not 'durations' in request.json:
+    if not request.json:
         abort(400)
     token = rand_token()
     melody = {
             'token': token,
-            'bpm': reques.json['bpm'],
+            'bpm': request.json['bpm'],
             'pitches': request.json['pitches'],
             'times': request.json['times'],
             'durations': request.json['durations']
