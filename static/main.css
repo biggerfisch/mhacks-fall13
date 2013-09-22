@@ -49,6 +49,8 @@ body{
 .highlight-dropdown{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    position: relative;
+    z-index: 5;
     
     background-color: #DDDDDD;
     border: 1px solid black;
