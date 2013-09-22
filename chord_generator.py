@@ -7,8 +7,11 @@ import timeit
 import re
 from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
+from pymongo import MongoClient
 #THIS SHIT WORKS HOLY SHIT IT WORKS DON'T TOUCH IT. 
 #I get list of notes, list of starting times, and list of lengths
+client = MongoClient()
+db = client['chordinator']
 print("Loading shit")
 ChordDictionary = {}
 path = 'data/json-responses/'
@@ -224,7 +227,18 @@ def ChordGenerator(ListOfNotes,ListofTimes):
 
     return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
 
-def MidiFileCreator(ListOfRelativeChordVoicings,root,token,bpm):
+def MidiFileCreator(token):
+    melody = db.melodies.find_one({'token': token})
+    bpm = db.melody['bpm']
+    pitches = db.melody['pitches']
+    times = db.melody['times']
+    durations = db.melody['durations']
+    song = db.songs.find_one({'token': token})
+    chord_pitches = db.song['chord_pitches']
+    chord_times = db.song['chord_times']
+    chord_center = db.song['chord_center']
+    ListOfRelativeChordVoicings = db.songs['chord_pitches']
+
     MyMIDI = MIDIFile(1)
     track = 0
     channel = 0
@@ -238,11 +252,10 @@ def MidiFileCreator(ListOfRelativeChordVoicings,root,token,bpm):
         for note in chord:
             MyMIDI.addNote(track,channel,int(note),time,duration,volume)
         time = time + 1
-
-    binfile = open(token + ".mid", 'wb')
+    binfile = open("statics/songs/" + token + ".mid", 'wb')
+    for note in pitches:
+        MyMIDI.addNote
     MyMIDI.writeFile(binfile)
     binfile.close()
+
 #Testing Area:
-ListOfNotes = [48,50,51,50,48,48,50,51,55,50,51,50]
-ListofTimes = [1,1,2,2,2,1,1,1,1,1,1,2]
-print(ChordGenerator(ListOfNotes,ListofTimes))
