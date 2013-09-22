@@ -97,13 +97,13 @@ body{
     position: absolute;
     
     top: 100px;
-    left: 100px;
+    left: 0px;
 }
 
 #metro-wrapper{
     float: right;
     margin-top: 20px;
-    width: 250px;
+    width: 200px;
     overflow: hidden;
     
 }

@@ -90,7 +90,7 @@ window.addEventListener('load', function() {
     output,
     outputs = null,
     msgSelectOutput = "<br/><br/><div>Please select a MIDI output...</div>",
-    msgKeyMapping = "<br/><br/>Now play some keys on your computer keyboard, keymapping is as follows:<br/><br/><span class='keys'>A,S,D,F,G,H,J,K,L</span> are white keys<br/><span class='keys'>W,E,T,Y,U,O,P</span> are black keys<br/><span class='keys'>spacebar</span> is sustain pedal",
+    msgKeyMapping = "<span class='keys'>A,S,D,F,G,H,J,K,L</span> are white keys<br/><span class='keys'>W,E,T,Y,U,O,P</span> are black keys<br/><span class='keys'>spacebar</span> is the sustain pedal",
     keysPressed = {},
     selectOutput = document.getElementById("outputs"),
     messageDiv = document.getElementById("help-message");
