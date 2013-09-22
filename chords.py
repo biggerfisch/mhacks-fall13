@@ -1,4 +1,4 @@
-from chord_generator import ChordGenerator
+from chord_generator import ChordGenerator, MidiFileCreator
 
 from flask import Flask, request, jsonify, render_template, abort, make_response
 from pymongo import MongoClient
@@ -58,7 +58,7 @@ def make_song():
     db.songs.insert(song)
     db.melodies.insert(melody)
     
-    #MidiFileCreator(token)
+    MidiFileCreator(token)
 
     return jsonify({'token': token}), 201
 
