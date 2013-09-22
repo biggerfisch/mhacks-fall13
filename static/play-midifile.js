@@ -53,12 +53,11 @@ window.addEventListener('load', function() {
 
     btnStop.addEventListener("click", function() {
         sequencer.stop();
-        //slider.setPercentage(0);
-        //info.getElementsByTagName("span")[7].innerHTML = "0:00:000";
+        slider.setPercentage(0);
+        info.getElementsByTagName("span")[7].innerHTML = "0:00:000";
         lastMessage.innerHTML = "";
     }, false);
     
-    /*
     //setup song position slider
     slider = midiBridge.createSlider("position", 500, 8, 0, 100, 0);
     
@@ -81,8 +80,6 @@ window.addEventListener('load', function() {
             output.sendMIDIMessage(midiAccess.createMIDIMessage(midiBridge.PROGRAM_CHANGE, 0, programId, 0));
         }
     });
-    
-   */
     
     midiBridge.init(function(_midiAccess){
         
@@ -123,9 +120,9 @@ window.addEventListener('load', function() {
 
         sequencer.addEventListener("midimessage",function(e){
             lastMessage.innerHTML = e.toString() + "<br/>";
-            //var timeStamp = parseInt(e.timeStamp);
-            //slider.setPercentage(((timeStamp / 1000) >> 0) / duration, false);
-            //position.innerHTML = midiBridge.formatMicroseconds(timeStamp);
+            var timeStamp = parseInt(e.timeStamp);
+            slider.setPercentage(((timeStamp / 1000) >> 0) / duration, false);
+            position.innerHTML = midiBridge.formatMicroseconds(timeStamp);
             if(output){
                 output.sendMIDIMessage(e);
             }
