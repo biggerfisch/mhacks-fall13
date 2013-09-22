@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template, abort, make_response
 from pymongo import MongoClient
-from chord_generator import ChordGenerator
 
 import random
 import base64
@@ -39,10 +38,9 @@ def make_song():
     db.melodies.insert(melody)
 
     pairs = [t.split('.') for t in request.json['times']]
-    times = [4*int(l)+int(r) - 1 for p in pairs]
-    intervals = [l-r for l,r in zip(times[1:],times)] + [1]
+    times = [4*int(l)+int(r) - 1 for l,r in pairs]
 
-    chords, center = ChordGenerator(request.json['pitches'], intervals)
+    ChordGenerator(request.json['pitches'], request.json['durations'], times)
 
     song = {
             'token': token,
@@ -58,8 +56,7 @@ def make_song():
 
 @app.route('/songs/<token>')
 def fetch_song(token):
-    melody = db.melodies.find_one({'token': token})
-    song = db.songs.find_one({'token': token})
+    song = db.melodies.find_one({'token': token})
     if song:
         return jsonify({'notes': song['notes']})
     else:
