@@ -244,7 +244,7 @@ def MidiFileCreator(melody,song):
     chord_times = song['chord_times']
     chord_center = song['chord_center']
     ListOfRelativeChordVoicings = song['chord_pitches']
-
+    token = melody['token']
     MyMIDI = MIDIFile(1)
     track = 0
     channel = 0
