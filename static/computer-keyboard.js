@@ -174,10 +174,8 @@ window.addEventListener('load', function() {
         outputs = midiAccess.enumerateOutputs();
         if (outputs.length <= 0)
         {
-            alert("No internalmidi devices detected!");
+            alert("No internalmidi devices detected!")
         }
-        // Connect to first output device
-        //output = midiAccess.getOutput(midiAccess.enumerateOutputs()[0]);
 
         //create dropdown menu for MIDI outputs and add an event listener to the change event
         midiBridge.createMIDIDeviceSelector(selectOutput,outputs,"ouput",function(deviceId){
