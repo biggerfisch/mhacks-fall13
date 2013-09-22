@@ -61,10 +61,6 @@ def fetch_song(token):
         return jsonify({'notes': song['notes']})
     else:
         abort(404)
-    
-@app.route('/home')
-def home_page2():
-    return render_template('home.html')
 
 @app.route('/about/')
 def about_page():
@@ -73,6 +69,10 @@ def about_page():
 @app.route('/keyboard/')
 def keyboard_page():
     return render_template('computer-keyboard.html')
+
+@app.route('/playback/')
+def playback_page():
+    return render_template('play-midifile.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
