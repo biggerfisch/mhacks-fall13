@@ -1,6 +1,7 @@
+from chord_generator import ChordGenerator
+
 from flask import Flask, request, jsonify, render_template, abort, make_response
 from pymongo import MongoClient
-from chord_generator import ChordGenerator
 
 import random
 import base64

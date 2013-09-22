@@ -8,17 +8,7 @@ import re
 from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
 
-print("Loading shit")
 ChordDictionary = {}
-path = 'data/json-responses/'
-for root, dirs, files in os.walk(path):
-    for name in files:
-        jsondata = open(path + name)
-        ChordDictionary[name] = json.load(jsondata)
-first_chord_data_path = 'data/first_json'
-first_json_data = open(first_chord_data_path)
-first_json = json.load(first_json_data)
-print("Shit loaded")
 
 def sum_n(series, n):
     return sum(islice(series,0,n))
@@ -206,6 +196,17 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
 
     #Returns One Chord per measure. Total of 8 eighth notes per measure
     #No key changes in Melody aka one Mode.
+
+    if not ChordDictionary:
+        path = 'data/json-responses/'
+        for root, dirs, files in os.walk(path):
+            for name in files:
+                jsondata = open(path + name)
+                ChordDictionary[name] = json.load(jsondata)
+        first_chord_data_path = 'data/first_json'
+        first_json_data = open(first_chord_data_path)
+        first_json = json.load(first_json_data)
+
     numMeasures = getNumberofMeasures(ListofTimes);
     ListOfChords = [];
     firstChord, root = getFirstChord(getNotesInMeasure(ListOfNotes,ListofTimes,0))
