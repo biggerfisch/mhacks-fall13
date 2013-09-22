@@ -64,7 +64,7 @@ def make_song():
 def fetch_song(token=None):
     song = db.melodies.find({'token': token})
     if song:
-        return jsonify({'notes': song['notes']})
+        #return jsonify({'notes': song['notes']})
         return render_template('song.html', token=token)
     else:
         abort(404)
