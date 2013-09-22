@@ -29,8 +29,6 @@ def home_page():
 @app.route('/songs', methods = ['POST'])
 def make_song():
     
-    abort(400)
-    
     if not request.json:
         abort(400)
     token = rand_token()
@@ -48,7 +46,9 @@ def make_song():
     
     pitches = [int(p) for p in request.json['pitches']]
     durations = [int(d) for d in request.json['durations']]
-
+    
+    abort(403)
+    
     chords, center = ChordGenerator(pitches, durations, times)
 
     song = {
