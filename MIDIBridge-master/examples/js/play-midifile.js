@@ -113,13 +113,13 @@ window.addEventListener('load', function() {
             
             info.innerHTML = "<span class='label'>file:</span> <span class='value'>" + args.fileName + "</span> ";
             alert(args.fileName);
-            info.innerHTML += "<span class='label'>length:</span><span class='value'>" + midiBridge.formatMicroseconds(args.microsecondLength) + "</span> ";
-            info.innerHTML += "<span class='label'>ticks:</span><span class='value'>" + args.tickLength + "</span> ";
-            info.innerHTML += "<span class='label'>position:</span><span id='time' class='value'>0:00:000</span>";
+            // info.innerHTML += "<span class='label'>length:</span><span class='value'>" + midiBridge.formatMicroseconds(args.microsecondLength) + "</span> ";
+            // info.innerHTML += "<span class='label'>ticks:</span><span class='value'>" + args.tickLength + "</span> ";
+            // info.innerHTML += "<span class='label'>position:</span><span id='time' class='value'>0:00:000</span>";
 
-            duration = args.duration;
-            slider.setRange(0, duration);
-            position = info.querySelector("#time");            
+            // duration = args.duration;
+            // slider.setRange(0, duration);
+            // position = info.querySelector("#time");            
         });
 
 
