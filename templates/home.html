@@ -2,13 +2,10 @@
 {% block title %}{% endblock %}
 {% block head %}
     {{ super() }}
-    <title>midi bridge</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="{{ url_for('static', filename='MIDIBridge.js') }}"></script>     
     <script type="text/javascript" src="{{ url_for('static', filename='MIDIDeviceSelector.js') }}"></script>     
     <script type="text/javascript" src="{{ url_for('static', filename='computer-keyboard.js') }}"></script>
-    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='reset.css') }}"/>
-    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='midibridge.css') }}"/>
+    <!--<link rel="stylesheet" media="screen" href="{{ url_for('static', filename='midibridge.css') }}"/>-->
 {% endblock %}
 {% block navigation%}
     {{ super() }}
