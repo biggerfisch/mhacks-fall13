@@ -61,13 +61,13 @@ def make_song():
     return jsonify({'token': token}), 201
 
 @app.route('/songs/<token>')
-def fetch_song(token):
-    #song = db.melodies.find({'token': token})
-    #if song:
+def fetch_song(token=None):
+    song = db.melodies.find({'token': token})
+    if song:
         #return jsonify({'notes': song['notes']})
         return render_template('song.html', token=token)
-    #else:
-    #    abort(404)
+    else:
+        abort(404)
 
 @app.route('/about/')
 def about_page():
