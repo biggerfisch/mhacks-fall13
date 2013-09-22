@@ -48,7 +48,9 @@ def make_song():
     durations = [int(d) for d in request.json['durations']]
     
     chords, center = ChordGenerator(pitches, durations, times)
-
+    
+    abort(404)
+    
     song = {
             'token': token,
             'chord_pitches': chords,
