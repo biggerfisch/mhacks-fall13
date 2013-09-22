@@ -10,9 +10,6 @@ app = Flask(__name__)
 client = MongoClient()
 db = client['chordinator']
 
-def ghetto_log(msg)
-    db.log.insert({'msg': msg})
-
 def rand_token():
     token = base64.urlsafe_b64encode(str(random.randint(1000,1000000)))
     while db.melodies.find_one({'token': token}):
@@ -46,8 +43,6 @@ def make_song():
     intervals = [l-r for l,r in zip(times[1:],times)] + [1]
 
     chords, center = ChordGenerator(request.json['pitches'], intervals)
-
-    ghetto_log(str(chords) + ", " + str(center))
 
     song = {
             'token': token,
