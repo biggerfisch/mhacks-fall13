@@ -95,12 +95,12 @@ body{
 
 #keyboard-io{
     float:left;
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
 #metro-wrapper{
     float: right;
-    margin-top: 50px;
+    margin-top: 70px;
     width: 250px;
     overflow: hidden;
     
