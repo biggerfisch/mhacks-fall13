@@ -201,13 +201,14 @@ window.addEventListener('load', function() {
         if (midiMessageType == midiBridge.NOTE_ON)
         {
             notesList.push(noteVal);
-            if (lengthList.length != startList.length && startList.length != 0){
+            if (lengthList.length != startList.length){
                 var currTotalPos = noteOnMeasure * 4 + noteOnTick;
-                var prevTotalPos = startList[startList.length - 1];
+                var prevTotalSplit = startList[startList.length - 1].split('.');
+                var prevTotalPos = parseInt(prevTotalSplit[0]) * 4 + parseInt(prevTotalSplit[1]);
                 var oldLen = currTotalPos - prevTotalPos;
                 lengthList.push(oldLen);
             }
-            startList.push((noteOnMeasure*4 + noteOnTick - 1));
+            startList.push(noteOnMeasure + "." + noteOnTick);
         }
         else if (midiMessageType == midiBridge.NOTE_OFF)
         {
