@@ -69,9 +69,17 @@ body{
 	transition: transform 0.26s ease;
 }
 
+.highlight-para{
+    background-color: #00CC00;
+    height: 25px;
+    padding: 5px;
+    font-size: 10px;
+}
+
 .highlight-para:hover ~ .highlight-dropdown{
     -webkit-transform: scaleY(1);
 	-o-transform: scaleY(1);
 	-ms-transform: scaleY(1);
 	transform: scaleY(1);
 }
+
