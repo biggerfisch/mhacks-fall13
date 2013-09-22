@@ -100,7 +100,9 @@ window.addEventListener('load', function() {
             console.log(output.toString());
         });
         
-        
+        // CANNOT USE A FILE CHOOSER
+
+
         //create a MIDI file chooser
         midiBridge.createMIDIFileChooser(chooseFile, uploadUrl, sequencer, function(args){
             if(args.fileName === undefined){
@@ -110,6 +112,7 @@ window.addEventListener('load', function() {
             }
             
             info.innerHTML = "<span class='label'>file:</span> <span class='value'>" + args.fileName + "</span> ";
+            alert(args.fileName);
             info.innerHTML += "<span class='label'>length:</span><span class='value'>" + midiBridge.formatMicroseconds(args.microsecondLength) + "</span> ";
             info.innerHTML += "<span class='label'>ticks:</span><span class='value'>" + args.tickLength + "</span> ";
             info.innerHTML += "<span class='label'>position:</span><span id='time' class='value'>0:00:000</span>";
