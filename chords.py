@@ -46,17 +46,17 @@ def make_song():
     pitches = [int(p) for p in request.json['pitches']]
     durations = [int(d) for d in request.json['durations']]
 
-    chords, center = ChordGenerator(pitches, durations, times)
+    #chords, center = ChordGenerator(pitches, durations, times)
 
-    song = {
-            'token': token,
-            'chord_pitches': chords,
-            'chord_times': [4]*len(chords),
-            'chord_center': center
-    }
-    db.songs.insert(song)
+    #song = {
+    #        'token': token,
+    #        'chord_pitches': chords,
+   #         'chord_times': [4]*len(chords),
+    #        'chord_center': center
+    #}
+    #db.songs.insert(song)
 
-    MidiFileCreator(token)
+    #MidiFileCreator(token)
 
     return jsonify({'token': token}), 201
 
