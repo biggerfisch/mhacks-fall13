@@ -9,8 +9,8 @@ from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
 from pymongo import MongoClient
 
-# client = MongoClient()
-# db = client['chordinator']
+client = MongoClient()
+db = client['chordinator']
 print("Loading shit")
 ChordDictionary = {}
 path = 'data/json-responses/'
@@ -141,7 +141,12 @@ def noteIsMajorSecond(rootOfChord,note):
 
 def chordFits(Chord,notesInMeasure,root):
     numberofConflicts = 0
-    NewChord = [note+root for note in Chord]
+    NewChord = []
+    print(Chord)
+    for note in Chord:
+        # print "This is 147"
+        # print(note)
+        NewChord.append(note+root)
     Chord = NewChord
     for note in notesInMeasure:
         for tone in Chord:
@@ -263,13 +268,13 @@ def MidiFileCreator(token):
     binfile.close()
 
 #Testing Area:
-# Times = [0,2]
-# Notes = [49,51]
-# Durations = [2,6]
+# Times = [0,1,2,3,4]
+# Notes = [49,53,56,53,49]
+# Durations = [1,1,1,1,4]
 # # #getNotesInMeasure(Notes,Times,0)
 # (Chord,root) = (ChordGenerator(Notes,Durations,Times))
-#print(chordFits(Chord,Notes,root))
-#print(getFirstChord(Notes))
+# # print(chordFits(Chord,Notes,root))
+# print(getFirstChord(Notes))
 
 
 
