@@ -115,7 +115,7 @@ def getNumberofMeasures(ListofTimes):
 def getNotesInMeasure(ListOfNotes,ListofTimes,MeasureNumber):
     notesInMeasure = []
     StartBeatPosition = 4*MeasureNumber
-    int IndexInListofNotes = StartBeatPosition;
+    IndexInListofNotes = StartBeatPosition;
     for i in range(StartBeatPosition,StartBeatPosition+3):
         for times in ListofTimes:
             if i == times:
