@@ -260,7 +260,6 @@ def MidiFileCreator(melody,song):
         for note in chord:
             Intnote = int(note + root)
             MyMIDI.addNote(track,channel,Intnote,time,duration,volume)
-            print(note)
         time = time + 4   
     for note,time in zip(pitches,times):
         MyMIDI.addNote(track,channel,int(note),int(time),1,volume)
