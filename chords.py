@@ -1,4 +1,4 @@
-import chord_generator
+from chord_generator import ChordGenerator
 
 from flask import Flask, request, jsonify, render_template, abort, make_response
 from pymongo import MongoClient
