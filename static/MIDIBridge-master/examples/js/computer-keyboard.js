@@ -178,7 +178,7 @@ window.addEventListener('load', function() {
         {
             notesList.push(noteVal);
             if (lengthList.length != startList.length){
-                var currTotalPos = metroMeasure * 4 + metroTick;
+                var currTotalPos = noteOnMeasure * 4 + noteOnTick;
                 var prevTotalSplit = startList[startList.length - 1].split('.');
                 var prevTotalPos = parseInt(prevTotalSplit[0]) * 4 + parseInt(prevTotalSplit[1]);
                 var oldLen = currTotalPos - prevTotalPos;
@@ -190,9 +190,10 @@ window.addEventListener('load', function() {
         {
             // THe note off must be the same as the latest note played
             if (notesList[notesList.length - 1] == noteVal){
-                var currTotalPos = metroMeasure * 4 + metroTick;
-                var prevTotalSplit = startList[startList.length - 1].split('.');
-                var prevTotalPos = parseInt(prevTotalSplit[0]) * 4 + parseInt(prevTotalSplit[1]);
+                var currTotalPos = noteOffMeasure * 4 + noteOffTick;
+                var prevTotalPos = noteOnMeasure * 4 + noteOnTick;
+                // var prevTotalSplit = startList[startList.length - 1].split('.');
+                // var prevTotalPos = parseInt(prevTotalSplit[0]) * 4 + parseInt(prevTotalSplit[1]);
                 var oldLen = currTotalPos - prevTotalPos;
                 lengthList.push(oldLen);
             }
@@ -210,13 +211,10 @@ window.addEventListener('load', function() {
         }
         else    // Next tick otherwise
         {
-            // IS GETTING CALLED BOTH WHEN NOTE IS ON AND OFF!!!!!!!!
-            noteOnMeasure = metroMeasure;
-            noteOffMeasure = metroMeasure;
-            noteOnTick = metroTick;
-            noteOffTick = metroTick;
             if (midiMessageType == midiBridge.NOTE_ON)
             {
+                noteOnMeasure = metroMeasure;
+                noteOnTick = metroTick;
                 if (noteOnTick == 4)
                 {
                     noteOnMeasure += 1;
@@ -230,6 +228,8 @@ window.addEventListener('load', function() {
             }
             else if (midiMessageType == midiBridge.NOTE_OFF)
             {
+                noteOffMeasure = metroMeasure;
+                noteOffTick = metroTick;
                 if (noteOffTick == 4)
                 {
                     noteOffMeasure += 1;
