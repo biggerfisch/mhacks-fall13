@@ -6,8 +6,22 @@ import os
 import timeit
 import re
 from itertools import cycle, islice
+
+print("Loading shit")
+ChordDictionary = {}
+path = 'data/json-responses/'
+for root, dirs, files in os.walk(path):
+    for name in files:
+        jsondata = open(path + name)
+        ChordDictionary[name] = json.load(jsondata)
+first_chord_data_path = 'data/first_json'
+first_json_data = open(first_chord_data_path)
+first_json = json.load(first_json_data)
+print("Shit loaded")
+
 def sum_n(series, n):
     return sum(islice(series,0,n))
+
 def scale(intervals):
     def this_scale(degree):
         deg = degree - 1
@@ -17,17 +31,21 @@ def scale(intervals):
             deg2 = -deg + 1
             return - (scale(list(reversed(intervals))))(deg2)
     return this_scale
+
 major = scale([2,2,1,2,2,2,1])
+
 def shift_mode(mode, steps):
     def shifted(deg):
         return mode(steps + deg) - mode(steps + 1)
     return shifted
+
 locrian    = shift_mode(major, -1)
 aeolian    = shift_mode(major, -2)
 mixolydian = shift_mode(major, -3)
 lydian     = shift_mode(major, -4)
 phrygian   = shift_mode(major, -5)
 dorian     = shift_mode(major, -6)
+
 def chord(mode, root, intervals):
     return [root - 1 + mode(i) for i in intervals]
 def triad(mode,root):
@@ -126,7 +144,6 @@ def chordFits(Chord,notesInMeasure,root):
     for note in notesInMeasure:
         for tone in Chord:
             if noteisNotInChord(note,Chord) and not noteIsMajorSecond(root,note):
-                print("AM I REACHING 129?")
                 if abs(note - tone) == 1 or abs(note - tone) == 11:
                     return False
                 if abs(note - tone) == 6:
@@ -153,20 +170,18 @@ def weightedChordChoice(chords):
     assert False, "Shouldn't get here"
 
 def weightedFirstChordChoice(chords):
-    total = 100;
-    # for chord in chords:
-    #     total = total + int(chord['prob'])
+    total = 0
+    for chord in chords:
+        total = total + int(chord[0]['prob'])
     r = random.uniform(0, total)
     # print(r)
     # print "155"
     #pprint(chords)
     upto = 0
     for chord in chords:
-        # print(100*float(chord['prob']))
-        if upto + 100*float(chord['prob']) > r:
-            print(chord)
+        if upto + float(chord[0]['prob']) > r:
             return chord
-        upto += 100*float(chord['prob'])
+        upto += float(chord[0]['prob'])
     assert False, "Shouldn't get here"
 
 
@@ -178,29 +193,12 @@ def weightedFirstChordChoice(chords):
 #     return chord(mode,)
 
 def getFirstChord(notesInMeasure):
-    first_chord_data_path = '/Users/vikas/Documents/Mhacks-Fall13/mhacks-fall13/data/first_json'
-    first_json_data = open(first_chord_data_path)
-    first_json = json.load(first_json_data)
-    listofPossibleChords = []
-    outputChordList = []
+    not_shitty_chords = []
     for i in range(12):
-        root = 48 + i #(i+random.randrange(0,11))%12
-        print (root)
-        bakaChord = weightedFirstChordChoice(first_json)
-        tries = 0
-        print(chordFits(voice_chord(bakaChord['path']),notesInMeasure,root))
-        while(not chordFits(voice_chord(bakaChord['path']),notesInMeasure,root) or tries > 40):
-            bakaChord = weightedFirstChordChoice(first_json)
-            tries = tries + 1
-            print ("trying again")
-            print(chordFits(voice_chord(bakaChord['path']),notesInMeasure,root))
-        if tries <= 40:
-            notesInChordList = voice_chord(bakaChord['path'])
-            chordMadeInAllKeys = [x+root for x in notesInChordList]
-            return chordMadeInAllKeys, root, bakaChord['path']
-        # pprint(x for x in chordMadeInAllKeys)
-
-    return outputChord, root
+        root = 48 + i
+        not_shitty_chords += [(j,root) for j in first_json if chordFits(voice_chord(j['path']),notesInMeasure,root)]
+    if not_shitty_chords:
+        return weightedFirstChordChoice(not_shitty_chords)
 
 def ChordGenerator(ListOfNotes,ListofTimes):
     #Generate all possible starting chords
@@ -209,24 +207,15 @@ def ChordGenerator(ListOfNotes,ListofTimes):
 
     #Returns One Chord per measure. Total of 8 eighth notes per measure
     #No key changes in Melody aka one Mode.
-    ChordDictionary = {}
-    path = '/Users/vikas/Documents/Mhacks-Fall13/mhacks-fall13/data/json-responses/'
-    for root, dirs, files in os.walk(path):
-        for name in files:
-            jsondata = open(path + name)
-            ChordDictionary[name] = json.load(jsondata)
     # mode = aeolian
      #getKey(ListOfNotes,ListofTimes,root) #Gets mode from notes
     #listofPossibleChords = getListOfChords(mode) #Generates chords from mode
 
     numMeasures = getNumberofMeasures(ListofTimes);
     ListOfChords = [];
-    (firstChord,root, i) = getFirstChord(getNotesInMeasure(ListOfNotes,ListofTimes,0))
+    firstChord, root = getFirstChord(getNotesInMeasure(ListOfNotes,ListofTimes,0))
+    i = firstChord['path']
     ListOfChords.append(i)
-    print (firstChord)
-    # pprint(firstChord) #This is the Parent
-    #JsonResponseslocation = '/Users/vikas/Documents/Mhacks-Fall13/mhacks-fall13/data/json-responses/'
-    #You Baka, make this relative path shit.
     for numba in range(numMeasures-1):
         num = numba + 1 
         i = i.replace("/","#")
@@ -244,4 +233,4 @@ def ChordGenerator(ListOfNotes,ListofTimes):
         ListOfChords.append(tempChord['SInED'])
         i = i + '.' + convertToFilePathSyntax(tempChord['SInED'])
 
-    return ListOfChords,root #One Chord Per Measure
+    return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
