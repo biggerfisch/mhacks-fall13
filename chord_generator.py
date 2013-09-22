@@ -10,6 +10,15 @@ from midiutil.MidiFile import MIDIFile
 
 ChordDictionary = {}
 first_json = {}
+base = '/home/mhacks/mhacks-fall13/'
+path = base + 'data/json-responses/'
+for root, dirs, files in os.walk(path):
+    for name in files:
+        jsondata = open(path + name)
+        ChordDictionary[name] = json.load(jsondata)
+first_chord_data_path = base + 'data/first_json'
+first_json_data = open(first_chord_data_path)
+first_json = json.load(first_json_data)
 def sum_n(series, n):
     return sum(islice(series,0,n))
 
@@ -198,17 +207,6 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
 
     #Returns One Chord per measure. Total of 8 eighth notes per measure
     #No key changes in Melody aka one Mode.
-    # global ChordDictionary
-    # global first_json
-    # if not ChordDictionary:       
-    #     path = 'data/json-responses/'
-    #     for root, dirs, files in os.walk(path):
-    #         for name in files:
-    #             jsondata = open(path + name)
-    #             ChordDictionary[name] = json.load(jsondata)
-    #     first_chord_data_path = 'data/first_json'
-    #     first_json_data = open(first_chord_data_path)
-    #     first_json = json.load(first_json_data)
 
     numMeasures = getNumberofMeasures(ListofTimes);
     ListOfChords = [];
@@ -238,7 +236,8 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
 def MidiFileCreator(melody,song):
     bpm = melody['bpm']
     pitches = melody['pitches']
-    times = melody['times']
+    parts = [t.split('.') for t in melody['times']]
+    times = [4*int(l)+int(r)-1 for l,r in parts]
     durations = melody['durations']
     chord_pitches = song['chord_pitches']
     chord_times = song['chord_times']
@@ -251,7 +250,7 @@ def MidiFileCreator(melody,song):
     time = 0
     duration = 1
     volume = 100
-    MyMIDI.addTrackName(track,time,token)
+    MyMIDI.addTrackName(track,time,"Herp derp")
     MyMIDI.addTempo(track,time,bpm)
     #Sends Chords to MIDI
     root = int(chord_center)
@@ -261,11 +260,8 @@ def MidiFileCreator(melody,song):
             MyMIDI.addNote(track,channel,Intnote,time,duration,volume)
             print(note)
         time = time + 4   
-    i = 0
-    for note in pitches:
-        MyMIDI.addNote(track,channel,int(note),int(times[i]),int(durations[i]),volume)
-        i = i + 1
-        print(note)
+    for note,time in zip(pitches,times):
+        MyMIDI.addNote(track,channel,int(note),int(time),1,volume)
     binfile = open("/home/mhacks/mhacks-fall13/static/songs/" + token + ".mid", 'wb')
     MyMIDI.writeFile(binfile)
     binfile.close()
