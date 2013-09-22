@@ -262,7 +262,7 @@ def MidiFileCreator(melody,song):
     for note in pitches:
         MyMIDI.addNote(track,channel,int(note),times[i],durations[i],volume)
         i = i + 1
-    binfile = open("/home/mhacks/mhacks-fall13/statics/songs/" + token + ".mid", 'wb')
+    binfile = open("/home/mhacks/mhacks-fall13/static/songs/" + token + ".mid", 'wb')
     MyMIDI.writeFile(binfile)
     binfile.close()
     return "blah"
