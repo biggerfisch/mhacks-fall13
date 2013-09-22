@@ -6,7 +6,12 @@ import os
 import timeit
 import re
 from itertools import cycle, islice
-
+from midiutil.MidiFile import MIDIFile
+from pymongo import MongoClient
+#THIS SHIT WORKS HOLY SHIT IT WORKS DON'T TOUCH IT. 
+#I get list of notes, list of starting times, and list of lengths
+client = MongoClient()
+db = client['chordinator']
 print("Loading shit")
 ChordDictionary = {}
 path = 'data/json-responses/'
@@ -136,8 +141,6 @@ def noteIsMajorSecond(rootOfChord,note):
 def chordFits(Chord,notesInMeasure,root):
     numberofConflicts = 0
     Chord = [note + root for note in Chord]
-    print(Chord)
-    print(notesInMeasure)
     for note in notesInMeasure:
         for tone in Chord:
             if noteisNotInChord(note,Chord) and not noteIsMajorSecond(root,note):
@@ -214,6 +217,7 @@ def ChordGenerator(ListOfNotes,ListofTimes):
         
         while(not chordFits(ChordIntoNotes,notesInMeasure,root)):
             tempChord = weightedChordChoice(data['children'])
+            ChordIntoNotes = voice_chord(tempChord['SInED'])
         # pprint(tempChord)
         ChordIntoNotes = voice_chord(tempChord['SInED']) 
         # newListToMakeShitMakeSense = [x+1 for x in ChordIntoNotes]
@@ -223,4 +227,37 @@ def ChordGenerator(ListOfNotes,ListofTimes):
 
     return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
 
-print(ChordGenerator([49,49,52,51],[2,2,2,2]))
+def MidiFileCreator(token):
+    melody = db.melodies.find_one({'token': token})
+    bpm = db.melody['bpm']
+    pitches = db.melody['pitches']
+    times = db.melody['times']
+    durations = db.melody['durations']
+    song = db.songs.find_one({'token': token})
+    chord_pitches = db.song['chord_pitches']
+    chord_times = db.song['chord_times']
+    chord_center = db.song['chord_center']
+    ListOfRelativeChordVoicings = db.songs['chord_pitches']
+
+    MyMIDI = MIDIFile(1)
+    track = 0
+    channel = 0
+    time = 0
+    duration = 1
+    volume = 100
+    MyMIDI.addTrackName(track,time,token)
+    MyMIDI.addTempo(track,time,bpm)
+    #Sends Chords to MIDI
+    for chord in ListOfRelativeChordVoicings:
+        for note in chord:
+            MyMIDI.addNote(track,channel,int(note),time,duration,volume)
+        time = time + 4   
+    i = 0
+    for note in pitches:
+        MyMIDI.addNote(track,channel,int(note),times[i],durations[i],volume)
+        i = i + 1
+    binfile = open("statics/songs/" + token + ".mid", 'wb')
+    MyMIDI.writeFile(binfile)
+    binfile.close()
+
+#Testing Area:
