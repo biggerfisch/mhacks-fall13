@@ -13,16 +13,18 @@
 {% block main_block %}
 
 <div class="relative instructions">
-    <p class="highlight-para-instructions center-text">Help</p>
+    <p class="highlight-para-instructions center-text">?</p>
     <div class="width-half highlight-dropdown">
     To make a recording, use <br /><div id="help-message"></div>.<br /> Press &lt;&gt; when done.<br/>
     If the applet does not run, try lowering your java security settings in the java control panel.
     </div>
 </div>
 
-<div id="keyboard-io">
-    <!-- dropdown menu for selecting a MIDI output -->
-    <select id="outputs"></select>
+<div class="relative">
+    <div id="keyboard-io">
+        <!-- dropdown menu for selecting a MIDI output -->
+        <select id="outputs"></select>
+    </div>
 </div>
 
 <div id="metro-wrapper">
