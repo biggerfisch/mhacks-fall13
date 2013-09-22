@@ -254,14 +254,16 @@ def MidiFileCreator(melody,song):
     MyMIDI.addTrackName(track,time,token)
     MyMIDI.addTempo(track,time,bpm)
     #Sends Chords to MIDI
+    root = int(chord_center)
     for chord in ListOfRelativeChordVoicings:
         for note in chord:
-            MyMIDI.addNote(track,channel,int(note),time,duration,volume)
+            Intnote = int(note) + root
+            MyMIDI.addNote(track,channel,Intnote,int(time),int(duration),volume)
             print(note)
         time = time + 4   
     i = 0
     for note in pitches:
-        MyMIDI.addNote(track,channel,int(note),times[i],durations[i],volume)
+        MyMIDI.addNote(track,channel,int(note),int(times[i]),int(durations[i]),volume)
         i = i + 1
         print(note)
     binfile = open("/home/mhacks/mhacks-fall13/static/songs/" + token + ".mid", 'wb')
