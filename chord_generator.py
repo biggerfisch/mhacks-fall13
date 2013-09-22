@@ -6,7 +6,9 @@ import os
 import timeit
 import re
 from itertools import cycle, islice
+from midiutil.MidiFile import MIDIFile
 #THIS SHIT WORKS HOLY SHIT IT WORKS DON'T TOUCH IT. 
+#I get list of notes, list of starting times, and list of lengths
 print("Loading shit")
 ChordDictionary = {}
 path = 'data/json-responses/'
@@ -222,9 +224,24 @@ def ChordGenerator(ListOfNotes,ListofTimes):
 
     return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
 
-def chordListAndLengthOutputer(ListOfNotes,ListofTimes):
-    (NoteList,root) = ChordGenerator(ListOfNotes,ListofTimes)
-    NoteList = [note + root for note in NoteList]  
+def MidiFileCreator(ListOfRelativeChordVoicings,root,token,bpm):
+    MyMIDI = MIDIFile(1)
+    track = 0
+    channel = 0
+    time = 0
+    duration = 1
+    volume = 100
+    MyMIDI.addTrackName(track,time,token)
+    MyMIDI.addTempo(track,time,bpm)
+    #Sends Chords to MIDI
+    for chord in ListOfRelativeChordVoicings:
+        for note in chord:
+            MyMIDI.addNote(track,channel,int(note),time,duration,volume)
+        time = time + 1
+
+    binfile = open(token + ".mid", 'wb')
+    MyMIDI.writeFile(binfile)
+    binfile.close()
 #Testing Area:
 ListOfNotes = [48,50,51,50,48,48,50,51,55,50,51,50]
 ListofTimes = [1,1,2,2,2,1,1,1,1,1,1,2]
