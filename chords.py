@@ -37,7 +37,8 @@ def make_song():
             'durations': request.json['durations']
     }
     db.melodies.insert(melody)
-    times = [int(t) for t in request.json['times']]
+    pairs = [t.split('.') for t in request.json['times']]
+    times = [4*int(l)+int(r) - 1 for p in pairs]
     intervals = [l-r for l,r in zip(times[1:],times)] + [1]
 
     chords, center = ChordGenerator(request.json['pitches'], intervals)

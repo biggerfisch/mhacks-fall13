@@ -222,5 +222,3 @@ def ChordGenerator(ListOfNotes,ListofTimes):
         i = i + '.' + convertToFilePathSyntax(tempChord['SInED'])
 
     return [voice_chord(c) for c in ListOfChords],root #One Chord Per Measure
-
-print(ChordGenerator([49,49,52,51],[2,2,2,2]))
