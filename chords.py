@@ -4,14 +4,8 @@ from chord_generator import ChordGenerator
 
 import random
 import base64
-import logging
 
 app = Flask(__name__)
-file_handler = logging.FileHandler(filename='/tmp/chordinator.log')
-file_handler.setLevel(logging.DEBUG)
-app.logger.addHandler(file_handler)
-
-app.logger.debug("Testing one two three")
 
 client = MongoClient()
 db = client['chordinator']
@@ -49,6 +43,7 @@ def make_song():
     intervals = [l-r for l,r in zip(times[1:],times)] + [1]
 
     chords, center = ChordGenerator(request.json['pitches'], intervals)
+
     song = {
             'token': token,
             'chord_pitches': chords,

@@ -106,30 +106,34 @@ def convertToFilePathSyntax(ChordNameString):
 #     print "BAKA"
 
 def getNumberofMeasures(ListofTimes):
-    total = 0
-    for i in ListofTimes:
-        total = total + i
-    return int(total/8) #If total/8 is int
+    # total = 0
+    # for i in ListofTimes:
+    #     total = total + i
+    # return int(total/8) #If total/8 is int
+    return ListofTimes[-1]/4
 
 def getNotesInMeasure(ListOfNotes,ListofTimes,MeasureNumber):
-    numnotes = 0
     notesInMeasure = []
-    BeatPosition = 0
-    startOfMeasure = 0
-    endOfMeasure = 0
-    for beatLength in ListofTimes:
-        BeatPosition = BeatPosition + beatLength
-        if(BeatPosition <= 8*MeasureNumber):
-            startOfMeasure = startOfMeasure + 1
-        if(BeatPosition <= 8*MeasureNumber+8):
-            endOfMeasure = endOfMeasure + 1
-    for noteIndex in range(startOfMeasure,endOfMeasure):
-        notesInMeasure.append(ListOfNotes[noteIndex])
+    StartBeatPosition = 4*MeasureNumber
+    int IndexInListofNotes = StartBeatPosition;
+    for i in range(StartBeatPosition,StartBeatPosition+3):
+        for times in ListofTimes:
+            if i == times:
+                notesInMeasure.append(ListOfNotes[IndexInListofNotes])
+        IndexInListofNotes = IndexInListofNotes + 1
     return notesInMeasure
+    # for beatLength in ListofTimes:
+    #     BeatPosition = BeatPosition + beatLength
+    #     if(BeatPosition <= 4*MeasureNumber):
+    #         startOfMeasure = startOfMeasure + 1
+    #     if(BeatPosition <= 4*MeasureNumber+4):
+    #         endOfMeasure = endOfMeasure + 1
+    # for noteIndex in range(startOfMeasure,endOfMeasure):
+    #     notesInMeasure.append(ListOfNotes[noteIndex])
 
 def noteisNotInChord(note,Chord):
     for tone in Chord:
-        if tone == note:
+        if tone == note or tone - note - 12 == 0 or note - tone - 12 == 0:
             return False
     return True
 
@@ -150,7 +154,7 @@ def chordFits(Chord,notesInMeasure,root):
                     return False
                 if abs(note - tone) == 8 or abs(note - tone) == 4 or abs(note - tone) == 20 or abs(note - tone) == 26:
                     return False
-                if abs(note - tone) == 2 or abs(note - tone) == 10:
+                if abs(note - tone) == 2 or abs(note - tone) == 10 or abs(note - tone) == 14 or abs(note - tone) == 22:
                     numberofConflicts = numberofConflicts + 1
     if(numberofConflicts > 3):
         return False
@@ -192,7 +196,7 @@ def getFirstChord(notesInMeasure):
     if not_shitty_chords:
         return weightedFirstChordChoice(not_shitty_chords)
 
-def ChordGenerator(ListOfNotes,ListofTimes):
+def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
     #List of notes will be between 48 and 64 as constrained by client-side input
     #THIS COMMENT IS IMPORTANT ^^^
 
