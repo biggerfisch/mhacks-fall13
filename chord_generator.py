@@ -8,8 +8,7 @@ import re
 from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
 from pymongo import MongoClient
-#THIS SHIT WORKS HOLY SHIT IT WORKS DON'T TOUCH IT. 
-#I get list of notes, list of starting times, and list of lengths
+
 client = MongoClient()
 db = client['chordinator']
 print("Loading shit")
@@ -114,13 +113,11 @@ def getNumberofMeasures(ListofTimes):
 
 def getNotesInMeasure(ListOfNotes,ListofTimes,MeasureNumber):
     notesInMeasure = []
-    StartBeatPosition = 4*MeasureNumber
-    int IndexInListofNotes = StartBeatPosition;
+    StartBeatPosition = 4*MeasureNumber   
     for i in range(StartBeatPosition,StartBeatPosition+3):
-        for times in ListofTimes:
+        for times in ListofTimes:            
             if i == times:
-                notesInMeasure.append(ListOfNotes[IndexInListofNotes])
-        IndexInListofNotes = IndexInListofNotes + 1
+                notesInMeasure.append(ListOfNotes[ListofTimes.index(times)])
     return notesInMeasure
     # for beatLength in ListofTimes:
     #     BeatPosition = BeatPosition + beatLength
@@ -211,7 +208,7 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
     firstChord, root = getFirstChord(getNotesInMeasure(ListOfNotes,ListofTimes,0))
     i = firstChord['path']
     ListOfChords.append(i)
-    for numba in range(numMeasures-1):
+    for numba in range(int(numMeasures)-1):
         num = numba + 1 
         i = i.replace("/","#")
         data = ChordDictionary[i]
@@ -265,3 +262,12 @@ def MidiFileCreator(token):
     binfile.close()
 
 #Testing Area:
+# Times = [0,2]
+# Notes = [49,51]
+# Durations = [2,6]
+# #getNotesInMeasure(Notes,Times,0)
+# print(ChordGenerator(Notes,Durations,Times))
+
+
+
+
