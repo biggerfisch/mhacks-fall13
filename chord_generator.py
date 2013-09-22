@@ -9,8 +9,8 @@ from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
 from pymongo import MongoClient
 
-# client = MongoClient()
-# db = client['chordinator']
+client = MongoClient()
+db = client['chordinator']
 print("Loading shit")
 ChordDictionary = {}
 path = 'data/json-responses/'
