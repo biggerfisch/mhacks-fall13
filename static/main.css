@@ -49,7 +49,7 @@ body{
 .highlight-dropdown{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    position: relative;
+    position: absolute;
     z-index: 5;
     
     background-color: #DDDDDD;
@@ -85,3 +85,6 @@ body{
 	transform: scaleY(1);
 }
 
+.relative{
+    position: relative;
+}
