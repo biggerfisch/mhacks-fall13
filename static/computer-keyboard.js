@@ -19,6 +19,7 @@ noteOffTime,            // The timestamp when noteOff occurred
 tickTime,               // The timestamp when the metronome tick happened
 messages,
 metroTick,
+globalTempo,
 noteOnMeasure,
 noteOffMeasure,
 noteOnTick,
@@ -33,16 +34,21 @@ lengthList = new Array();
 
 function SendData(){
     if (notesList.length == 0){
-        return;
+        alert("You have not recorded anything! To start recording, press the record button.");
+    }
+    d = {
+        bpm: globalTempo,
+        pitches: notesList,
+        times: startList,
+        durations: lengthList
     }
     jQuery.ajax({
-    type: "POST",
-    url: "http://biggerfisch.us.to/songs",
-    contentType: 'application/json',
-    data: JSON.stringify(notesList),
-    dataType: "json",
-    success: function(response){
-    console.log("HERP DERP");
+        type: "POST",
+        url: "http://biggerfisch.us.to/songs",
+        contentType: 'application/json',
+        data: JSON.stringify(d),
+        dataType: "json",
+        success: function(response){
             console.log(JSON.stringify(response));
             alert(JSON.stringify(response));
         }
@@ -446,6 +452,7 @@ var metronome = function(opts) {
                     else if (tempo > 200) { tempo = 200; }
                     else if (tempo < 30) { tempo = 30; }
                     $("#tempo").val(tempo);
+                    globalTempo = tempo;
 
                     // Set the timedistinction value.
                     timeDistinction = ((60 / tempo) * 1000) * distinctFactor;
