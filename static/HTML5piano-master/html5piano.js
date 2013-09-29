@@ -47,28 +47,27 @@ _public.Piano = {
                     darkGray: "#333"
                 };
 
-                options						= options || {};
-                options.keyCallback                     = options.keyCallback || function(){};
-                options.height				= options.height || 150;
-                options.width				= options.width || 150;
-                options.backgroundFill		= options.backgroundFill || colors.brown;
-                options.backgroundStroke	= options.backgroundStroke || colors.black;
-                options.whiteKeyFill		= options.whiteKeyFill || colors.white;
-                options.whiteKeyStroke		= options.whiteKeyStroke || colors.darkGray;
-                options.blackKeyFill		= options.blackKeyFill || colors.black;
-                options.blackKeyStroke		= options.blackKeyStroke || colors.darkGray;
-                options.activeKeyFill		= options.activeKeyFill || colors.gray;
-                options.activeKeyStroke		= options.activeKeyStroke || colors.black;
-                options.loaderFill			= options.loaderFill || colors.black;
-                options.loaderFont			= options.loaderFont || "'Times New Roman', Times";
-                options.titleColor			= options.titleColor || colors.white;
-                options.titleFont			= options.titleFont || "'Times New Roman', Times";
-                options.powerOnFill			= options.powerOnFill || colors.green;
-                options.powerOnStroke		= options.powerOnStroke || colors.black;
-                options.powerOffFill		= options.powerOffFill || colors.red;
-                options.powerOffStroke		= options.powerOffStroke || colors.black;			
-                options.voice				= options.voice || _public.Piano.Voices.GRAND_PIANO;
-                options.extension			= reqs.ext;
+                options                                         = options || {};
+                options.height                          = options.height || 150;
+                options.width                           = options.width || 150;
+                options.backgroundFill          = options.backgroundFill || colors.brown;
+                options.backgroundStroke        = options.backgroundStroke || colors.black;
+                options.whiteKeyFill            = options.whiteKeyFill || colors.white;
+                options.whiteKeyStroke          = options.whiteKeyStroke || colors.darkGray;
+                options.blackKeyFill            = options.blackKeyFill || colors.black;
+                options.blackKeyStroke          = options.blackKeyStroke || colors.darkGray;
+                options.activeKeyFill           = options.activeKeyFill || colors.gray;
+                options.activeKeyStroke         = options.activeKeyStroke || colors.black;
+                options.loaderFill                      = options.loaderFill || colors.black;
+                options.loaderFont                      = options.loaderFont || "'Times New Roman', Times";
+                options.titleColor                      = options.titleColor || colors.white;
+                options.titleFont                       = options.titleFont || "'Times New Roman', Times";
+                options.powerOnFill                     = options.powerOnFill || colors.green;
+                options.powerOnStroke           = options.powerOnStroke || colors.black;
+                options.powerOffFill            = options.powerOffFill || colors.red;
+                options.powerOffStroke          = options.powerOffStroke || colors.black;                       
+                options.voice                           = options.voice || _public.Piano.Voices.GRAND_PIANO;
+                options.extension                       = reqs.ext;
 
                 reqs.target.appendChild(_private.Piano(options, reqs.canvas));
 
@@ -96,18 +95,18 @@ _public.Piano = {
 };
 
 _private.Piano = function(options, canvas) {
-    canvas.style.width	= options.width + "px";
+    canvas.style.width      = options.width + "px";
     canvas.style.height = options.height + "px";
-    canvas.width		= options.width;
-    canvas.height		= options.height;
-    canvas.mouseTarget	= null;
-    canvas.pianoBg		= new _private.Piano.Background(options);
-    canvas.pianoPower	= new _private.Piano.Power(options);
-    canvas.pianoTitle	= new _private.Piano.Title(options);
-    canvas.loader		= new _private.Piano.Loader(options);
-    canvas.pianoKeys	= _private.Piano.Key.loadKeys(options, _private.Piano.onKeyLoaded(canvas));
-    canvas.drawPiano	= _private.Piano.drawPiano;
-    canvas.drawLoader	= _private.Piano.drawLoader;
+    canvas.width            = options.width;
+    canvas.height           = options.height;
+    canvas.mouseTarget      = null;
+    canvas.pianoBg          = new _private.Piano.Background(options);
+    canvas.pianoPower       = new _private.Piano.Power(options);
+    canvas.pianoTitle       = new _private.Piano.Title(options);
+    canvas.loader           = new _private.Piano.Loader(options);
+    canvas.pianoKeys        = _private.Piano.Key.loadKeys(options, _private.Piano.onKeyLoaded(canvas));
+    canvas.drawPiano        = _private.Piano.drawPiano;
+    canvas.drawLoader       = _private.Piano.drawLoader;
 
     canvas.drawLoader(0);
 
@@ -145,7 +144,7 @@ _private.Piano.getRequirements = function(id, doc, audio, canvas, target, mime, 
         } 
         if(target.appendChild) {
             reqs.target = target;
-        }			
+        }                       
         return reqs;
     } else {
         return null;
@@ -311,15 +310,15 @@ _private.Piano.Background.prototype = {
 };
 
 _private.Piano.Key = function(x, y, w, h, fill, stroke, afill, astroke) {
-    this.x				= x;
-    this.y				= y;
-    this.width			= w;
-    this.height			= h;
-    this.pressed		= false;
-    this.fill			= fill;
-    this.stroke			= stroke;
-    this.activeFill		= afill;
-    this.activeStroke	= astroke;
+    this.x                          = x;
+    this.y                          = y;
+    this.width                      = w;
+    this.height                     = h;
+    this.pressed            = false;
+    this.fill                       = fill;
+    this.stroke                     = stroke;
+    this.activeFill         = afill;
+    this.activeStroke       = astroke;
 };
 
 _private.Piano.Key.map = {
@@ -417,9 +416,9 @@ _private.Piano.Key.prototype = {
         context.strokeRect(this.x, this.y, this.width, this.height);
     },
     bindAudio: function(source, callback, key, version) {
-        key				= this;
-        key.audio		= new Audio("");
-        key.audio.src	= source;
+        key                             = this;
+        key.audio               = new Audio("");
+        key.audio.src   = source;
         key.audio.addEventListener("canplaythrough", function onCanPlayThrough() {
             key.audio.removeEventListener("canplaythrough", onCanPlayThrough, true);
             callback(key.audio);
