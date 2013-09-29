@@ -1,4 +1,7 @@
 from __future__ import division
+
+from flask import Flask
+
 from pprint import pprint
 import json
 import random
@@ -8,9 +11,12 @@ import re
 from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
 
+app = Flask(__name__)
+app.config.from_pyfile('app.cfg')
+
 ChordDictionary = {}
 first_json = {}
-base = '/home/mhacks/mhacks-fall13/'
+base = app.config['BASE_PATH']
 path = base + 'data/json-responses/'
 for root, dirs, files in os.walk(path):
     for name in files:
@@ -263,7 +269,7 @@ def MidiFileCreator(melody,song):
         time = time + 4   
     for note,time in zip(pitches,times):
         MyMIDI.addNote(track,channel,int(note),int(time),1,volume)
-    binfile = open("/home/mhacks/mhacks-fall13/static/songs/" + token + ".mid", 'wb')
+    binfile = open(base + "static/songs/" + token + ".mid", 'wb')
     MyMIDI.writeFile(binfile)
     binfile.close()
     return "blah"

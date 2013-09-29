@@ -7,6 +7,7 @@ import random
 import base64
 
 app = Flask(__name__)
+app.config.from_pyfile('app.cfg')
 
 client = MongoClient()
 db = client['chordinator']
