@@ -103,7 +103,6 @@ _private.Piano = function(options, canvas) {
     canvas.height           = options.height;
     canvas.mouseTarget      = null;
     canvas.pianoBg          = new _private.Piano.Background(options);
-    canvas.pianoPower       = new _private.Piano.Power(options);
     canvas.pianoTitle       = new _private.Piano.Title(options);
     canvas.loader           = new _private.Piano.Loader(options);
     canvas.pianoKeys        = _private.Piano.Key.loadKeys(options, _private.Piano.onKeyLoaded(canvas));
@@ -188,17 +187,9 @@ _private.Piano.attachListeners = function(canvas) {
             canvas.drawPiano();
         }
     }, true);
-    canvas.addEventListener("mouseover", function(){
-        canvas.pianoPower.on = true;
-        canvas.drawPiano();
-    }, true);
-    canvas.addEventListener("mouseout", function(){
-        canvas.pianoPower.on = false;
-        canvas.drawPiano();
-    }, true);
     _public.addEventListener("keydown", function(event, key){
         key = event.which.toString();
-        if(canvas.pianoPower.on && _private.Piano.Key.map.hasOwnProperty(key)) {
+        if(_private.Piano.Key.map.hasOwnProperty(key)) {
             key = _private.Piano.Key.map[key];
             canvas.pianoKeys[key].press();
             canvas.drawPiano();
@@ -218,7 +209,6 @@ _private.Piano.drawPiano = function(context) {
     context = this.getContext("2d");
     this.pianoBg.draw(context);
     this.pianoTitle.draw(context);
-    this.pianoPower.draw(context);
     this.pianoKeys.draw(context);
 };
 
