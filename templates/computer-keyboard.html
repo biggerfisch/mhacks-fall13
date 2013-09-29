@@ -27,9 +27,51 @@ window.addEventListener('load', function() {
         }
     });
 });
+
+function closestMultiple(n, b) {
+    var closest = 1;
+    var current = 1;
+    while (current * (b-1) < n) {
+        if (Math.abs(current * b - n) < Math.abs(closest * b - n)) {
+            closest = current;
+        }
+        current += 1;
+    }
+    return closest;
+}
+
 function dumpData() {
-    console.log(JSON.stringify(window.noteStarts));
-    console.log(JSON.stringify(window.noteStops));
+    var TEMPO = 140; // IT'S FUCKING ARBITRARY OKAY
+
+    var midi_notes = [];
+    var ms_per_eighth = 60000 / TEMPO / 2;
+    
+    // Assuming they're the same length for now...
+    console.log(window.noteStarts.length, window.noteStops.length);
+
+    var beat = 0;
+    for (var i=0; i < window.noteStarts.length; i++) {
+        var delta;
+        var duration;
+        if (i < window.noteStarts.length - 1) {
+            delta = window.noteStarts[i+1][1] - window.noteStarts[i][1];
+            duration = closestMultiple(delta, ms_per_eighth);
+        } else {
+            duration = midi_notes[midi_notes.length-1][2];
+        }
+        midi_notes.push([
+            window.noteStarts[i][0], // The note
+            beat,
+            duration
+        ]);
+        beat += duration;
+    }
+    console.log(JSON.stringify(midi_notes));
+}
+
+function clearData() {
+    window.noteStarts = [];
+    window.noteStops = [];
 }
 
 </script>
@@ -37,6 +79,7 @@ function dumpData() {
 
 <body>
 <button onClick="dumpData()">Dump data</button>
+<button onClick="clearData()">Clear data</button>
 <div id="piano"></div>
 
 </body>
