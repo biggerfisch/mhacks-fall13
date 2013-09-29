@@ -4,7 +4,17 @@
  *  http://abumarkub.net/midibridge/license
  * 
  * 
- *  example of how you can load and play a MIDI file
+ *  Example of how you can load and play a MIDI file
+ *  
+ *  The differece with the play-midifile example, is that in this example the output 
+ *  gets connected directly in Java via setDirectOutput(); 
+ * 
+ *  This results in better playback performance. So if your application does a lot
+ *  of graphical updates on incoming MIDI events, you should choose this method.
+ *  
+ *  Compared to the play-midifile example, changes are in the code starting at line 106 (direct connection added) 
+ *  and in the code starting at line 136 (only graphical updates in the event listener).
+ *  
  * 
  *  dependecies:
  *  - MIDIBridge.js
@@ -62,6 +72,7 @@ window.addEventListener('load', function() {
     slider = midiBridge.createSlider("position", 500, 8, 0, 100, 0);
     
     slider.addEventListener("changed", function(value) {
+        sequencer.pause();
         sequencer.setMicrosecondPosition(value * 1000) //value in microseconds as String!
     });
 
@@ -75,7 +86,7 @@ window.addEventListener('load', function() {
     
 
   
-    //add a program select dropdown menu and add an event listener to the change event
+    //add a program select dropdown menu
     midiBridge.createMIDIProgramSelector(selectProgram,function(programId){
         if(output && midiAccess){
             output.sendMIDIMessage(midiAccess.createMIDIMessage(midiBridge.PROGRAM_CHANGE, 0, programId, 0));
@@ -89,20 +100,20 @@ window.addEventListener('load', function() {
         midiAccess = _midiAccess;
         outputs = midiAccess.enumerateOutputs();
         sequencer = midiBridge.getSequencer();
-        console.log(sequencer.getTempoInBPM());
-         
+        //console.log(sequencer.getTempoInBPM());
+        //console.log(sequencer.hasDirectOutput());
+        
         //create dropdown menu for MIDI outputs and add an event listener to the change event
         midiBridge.createMIDIDeviceSelector(selectOutput,outputs,"ouput",function(deviceId){
             if(output){
                 output.close();
             }
             output = midiAccess.getOutput(outputs[deviceId]);
-            console.log(output.toString());
+            sequencer.setDirectOutput(output);
+            //console.log(sequencer.hasDirectOutput());          
         });
         
-        // CANNOT USE A FILE CHOOSER
-
-
+        
         //create a MIDI file chooser
         midiBridge.createMIDIFileChooser(chooseFile, uploadUrl, sequencer, function(args){
             if(args.fileName === undefined){
@@ -112,14 +123,14 @@ window.addEventListener('load', function() {
             }
             
             info.innerHTML = "<span class='label'>file:</span> <span class='value'>" + args.fileName + "</span> ";
-            alert(args.fileName);
-            // info.innerHTML += "<span class='label'>length:</span><span class='value'>" + midiBridge.formatMicroseconds(args.microsecondLength) + "</span> ";
-            // info.innerHTML += "<span class='label'>ticks:</span><span class='value'>" + args.tickLength + "</span> ";
-            // info.innerHTML += "<span class='label'>position:</span><span id='time' class='value'>0:00:000</span>";
+            info.innerHTML += "<span class='label'>length:</span><span class='value'>" + midiBridge.formatMicroseconds(args.microsecondLength) + "</span> ";
+            info.innerHTML += "<span class='label'>ticks:</span><span class='value'>" + args.tickLength + "</span> ";
+            info.innerHTML += "<span class='label'>position:</span><span id='time' class='value'>0:00:000</span>";
 
-            // duration = args.duration;
-            // slider.setRange(0, duration);
-            // position = info.querySelector("#time");            
+            duration = args.duration;
+            slider.setRange(0, duration);
+            position = info.querySelector("#time");
+            
         });
 
 
@@ -128,9 +139,10 @@ window.addEventListener('load', function() {
             var timeStamp = parseInt(e.timeStamp);
             slider.setPercentage(((timeStamp / 1000) >> 0) / duration, false);
             position.innerHTML = midiBridge.formatMicroseconds(timeStamp);
-            if(output){
-                output.sendMIDIMessage(e);
-            }
-        });        
+        });  
+        
+        sequencer.addEventListener("metamessage",function(e){
+            //metamessages are for instance tempo change events
+        });
     });
 }, false);

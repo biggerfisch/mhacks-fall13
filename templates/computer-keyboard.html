@@ -1,19 +1,18 @@
-<!doctype html>
-<html>
-    <head>
-        <title>midi bridge</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="lib/MIDIBridge.js"></script>     
-        <script type="text/javascript" src="lib/MIDIDeviceSelector.js"></script>     
-        <script type="text/javascript" src="js/computer-keyboard.js"></script>
-        <link rel="stylesheet" media="screen" href="css/reset.css"/>
-        <link rel="stylesheet" media="screen" href="css/midibridge.css"/>
-    </head>
-    <body>
-        <div id="content">
-            <!-- dropdown menu for selecting a MIDI output -->
-            <select id="outputs"></select>
+{% extends "layout.html" %}
+{% block title %}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ url_for('static', filename='MIDIBridge.js') }}"></script>     
+    <script type="text/javascript" src="{{ url_for('static', filename='MIDIDeviceSelector.js') }}"></script>     
+    <script type="text/javascript" src="{{ url_for('static', filename='computer-keyboard.js') }}"></script>
+    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='midibridge.css') }}"/>
+{% endblock %}
+{% block navigation%}
+    {{ super() }}
+{% endblock %}
+{% block main_block %}
 
+        <div id="content">
             <!-- display keyboard mapping -->
             <div id="help-message"></div>
 
@@ -64,7 +63,7 @@
                     tick: tick,
                     complete: done,
                     paper: paper,
-                    audio: "tick.wav?raw=true"
+                    audio: "{{ url_for('static', filename='tick.wav') }}"
                 });
 
                 m.make_input("#inputs");
@@ -75,5 +74,4 @@
             <!-- END METRONOME STUFF!!! -->
 
         </div>
-    </body>
-</html>
+{% endblock %}

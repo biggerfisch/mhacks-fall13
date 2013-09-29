@@ -22,6 +22,10 @@ body{
     min-height: 200px;
 }
 
+.sm-textblock{
+    min-height: 100px;
+}
+
 .width-full{
     width: 1000px;
 }
@@ -32,16 +36,74 @@ body{
 }
 
 .profile{
-    box-sizing: border-box;
     width: 246px;
     height: 400px;
-    border: 1px solid #00f;
-    margin: 1px;
+    margin: 2px;
     float: left;
-    
-    background-color: #fff400;
 }
 
 .center-text{
     text-align: center;
+}
+
+.highlight-dropdown{
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 5;
+    
+    background-color: #DDDDDD;
+    border: 1px solid black;
+
+    -webkit-transform: scaleY(0);
+	-o-transform: scaleY(0);
+	-ms-transform: scaleY(0);
+	transform: scaleY(0);
+
+	-webkit-transform-origin: top;
+	-o-transform-origin: top;
+	-ms-transform-origin: top;
+	transform-origin: top;
+
+	-webkit-transition: -webkit-transform 0.25s ease-out;
+	-o-transition: -o-transform 0.25s ease;
+	-ms-transition: -ms-transform 0.25s ease;
+	transition: transform 0.25s ease;
+}
+
+.highlight-para-instructions{
+    background-color: #00CC00;
+    padding-top: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    float: left;
+}
+
+.relative.instructions:hover .highlight-dropdown{
+    -webkit-transform: scaleY(1);
+	-o-transform: scaleY(1);
+	-ms-transform: scaleY(1);
+	transform: scaleY(1);
+}
+
+.relative{
+    position: relative;
+}
+
+#keyboard-io{
+    position: absolute;
+    
+    top: 100px;
+    left: 0px;
+}
+
+#metro-wrapper{
+    float: right;
+    margin-top: 20px;
+    width: 200px;
+    overflow: hidden;
+    
 }

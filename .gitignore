@@ -1,1 +1,3 @@
 *.wsgi
+chord_generator-old.pyc
+app.cfg

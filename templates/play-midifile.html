@@ -1,18 +1,16 @@
-<!-- THIS IS NOT FOR THE SERVER! THIS IS FOR TESTING!!!! -->
-
 <!doctype html>
 <html>
     <head>
-        <title>midi bridge</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="lib/MIDIBridge.js"></script>     
-        <script type="text/javascript" src="lib/MIDIFileChooser.js"></script>     
-        <script type="text/javascript" src="lib/MIDIDeviceSelector.js"></script>     
-        <script type="text/javascript" src="lib/MIDIProgramSelector.js"></script>     
-        <script type="text/javascript" src="lib/Slider.js"></script>     
-        <script type="text/javascript" src="js/play-midifile.js"></script>
-        <link rel="stylesheet" media="screen" href="css/reset.css"/>
-        <link rel="stylesheet" media="screen" href="css/midibridge.css"/>
+        <title>The Chordinator</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">   
+        <script type="text/javascript" src="{{ url_for('static', filename='MIDIFileChooser.js') }}"></script>     
+        <script type="text/javascript" src="{{ url_for('static', filename='MIDIProgramSelector.js') }}"></script>     
+        <script type="text/javascript" src="{{ url_for('static', filename='Slider.js') }}"></script>     
+        <script type="text/javascript" src="{{ url_for('static', filename='MIDIBridge.js') }}"></script>     
+        <script type="text/javascript" src="{{ url_for('static', filename='MIDIDeviceSelector.js') }}"></script>     
+        <script type="text/javascript" src="{{ url_for('static', filename='play-midifile.js') }}"></script>
+        <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='reset.css') }}"/>
+        <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='midibridge.css') }}"/>
     </head>
     <body>
         <div id="content">
@@ -23,7 +21,6 @@
                 <div id="btn-play" class="button">PLAY</div>
                 <div id="btn-pause" class="button">PAUSE</div>
                 <div id="btn-stop" class="button">STOP</div>
-                <div id="btn-MYBUTTON" class="button" onClick="myCreateFile(scar.mid, php/midiToBase64.php)">TRY MY SONG</div>
             </div>
             
             <!-- dropdown menu for selecting a MIDI output -->

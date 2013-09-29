@@ -19,6 +19,7 @@ noteOffTime,            // The timestamp when noteOff occurred
 tickTime,               // The timestamp when the metronome tick happened
 messages,
 metroTick,
+globalTempo,
 noteOnMeasure,
 noteOffMeasure,
 noteOnTick,
@@ -33,18 +34,24 @@ lengthList = new Array();
 
 function SendData(){
     if (notesList.length == 0){
-        return;
+        alert("You have not recorded anything! To start recording, press the record button.");
+    }
+    d = {
+        bpm: globalTempo,
+        pitches: notesList,
+        times: startList,
+        durations: lengthList
     }
     jQuery.ajax({
-    type: "POST",
-    url: "http://biggerfisch.us.to/songs",
-    contentType: 'application/json',
-    data: JSON.stringify(notesList),
-    dataType: "json",
-    success: function(response){
-    console.log("HERP DERP");
+        type: "POST",
+        url: "http://biggerfisch.us.to/songs",
+        contentType: 'application/json',
+        data: JSON.stringify(d),
+        dataType: "json",
+        success: function(response){
             console.log(JSON.stringify(response));
-            alert(JSON.stringify(response));
+            //window.location = "http://biggerfisch.us.to/songs/" + response["token"];
+            messages.innerHTML = "<br/> Resulting chord progression: <br/>" + response["chords"] + "<br/>token:" + response["token"] + "<br/>";
         }
     });
 }
@@ -84,7 +91,7 @@ window.addEventListener('load', function() {
     output,
     outputs = null,
     msgSelectOutput = "<br/><br/><div>Please select a MIDI output...</div>",
-    msgKeyMapping = "<br/><br/>Now play some keys on your computer keyboard, keymapping is as follows:<br/><br/><span class='keys'>A,S,D,F,G,H,J,K,L</span> are white keys<br/><span class='keys'>W,E,T,Y,U,O,P</span> are black keys<br/><span class='keys'>spacebar</span> is sustain pedal",
+    msgKeyMapping = "<span class='keys'>A,S,D,F,G,H,J,K,L</span> are white keys<br/><span class='keys'>W,E,T,Y,U,O,P</span> are black keys<br/><span class='keys'>spacebar</span> is the sustain pedal",
     keysPressed = {},
     selectOutput = document.getElementById("outputs"),
     messageDiv = document.getElementById("help-message");
@@ -167,6 +174,12 @@ window.addEventListener('load', function() {
         midiAccess = _midiAccess;
         outputs = midiAccess.enumerateOutputs();
 
+        output = midiAccess.getOutput(midiAccess.enumerateOutputs()[0]);
+
+        //messageDiv.innerHTML = "<br/><br/><br/><span class='device-type'>connected: </span><div>" + output.deviceName + "</div>";
+        messageDiv.innerHTML = msgKeyMapping;
+
+        /*
         //create dropdown menu for MIDI outputs and add an event listener to the change event
         midiBridge.createMIDIDeviceSelector(selectOutput,outputs,"ouput",function(deviceId){
             
@@ -182,6 +195,7 @@ window.addEventListener('load', function() {
                 messageDiv.innerHTML = msgKeyMapping;
             }
         });
+        */
         
         connectKeyboard();
     });
@@ -430,8 +444,8 @@ var metronome = function(opts) {
             $("<div />", {
                 html:   "<span>tempo: </span>" + 
                         "<input class='metr_input' type='text' id='tempo' value='120' />" +
-                        "<span>ticks: </span>" +
-                        "<input class='metr_input' type='text' id='ticks' value='12000' />" +
+                        // "<span>ticks: </span>" +
+                        // "<input class='metr_input' type='text' id='ticks' value='12000' />" +
                         "<button id='startstop'>start</button>"
             }).appendTo(el);
             
@@ -446,14 +460,17 @@ var metronome = function(opts) {
                     else if (tempo > 200) { tempo = 200; }
                     else if (tempo < 30) { tempo = 30; }
                     $("#tempo").val(tempo);
+                    globalTempo = tempo;
 
                     // Set the timedistinction value.
                     timeDistinction = ((60 / tempo) * 1000) * distinctFactor;
                     
-                    var ticks = parseInt($('#ticks').val(), 10);
-                    if (!ticks || ticks < 8) { ticks = 12000; }
-                    $("#ticks").val(ticks); 
+                    // var ticks = parseInt($('#ticks').val(), 10);
+                    // if (!ticks || ticks < 8) { ticks = 12000; }
+                    // $("#ticks").val(ticks); 
                     
+                    ticks = 12000;
+
                     m.start(tempo, ticks);
                     metronomePlaying = true;
                 } else {

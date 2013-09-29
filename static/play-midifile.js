@@ -14,6 +14,8 @@
  * 
  */
 
+
+
 window.addEventListener('load', function() {
 
     var midiAccess = null,
@@ -29,7 +31,7 @@ window.addEventListener('load', function() {
     chooseFile = document.getElementById("choose-file"),
     info = document.getElementById("info"),
     lastMessage = document.getElementById("last-message"),
-    uploadUrl = "php/midiToBase64.php",
+    uploadUrl = "midiToBase64.php",
     duration,position; 
     
     
@@ -39,7 +41,7 @@ window.addEventListener('load', function() {
         midiBridge.wrapElement(btnStop);
     }    
     
-      
+/*      
     //setup playback controls for the sequencer
     btnPlay.addEventListener("click", function() {
         sequencer.play();
@@ -55,9 +57,7 @@ window.addEventListener('load', function() {
         info.getElementsByTagName("span")[7].innerHTML = "0:00:000";
         lastMessage.innerHTML = "";
     }, false);
-    
-   
-    
+
     //setup song position slider
     slider = midiBridge.createSlider("position", 500, 8, 0, 100, 0);
     
@@ -72,8 +72,7 @@ window.addEventListener('load', function() {
     slider.addEventListener("stopDrag", function(value) {
         sequencer.play()
     });
-    
-
+*/
   
     //add a program select dropdown menu and add an event listener to the change event
     midiBridge.createMIDIProgramSelector(selectProgram,function(programId){
@@ -81,8 +80,6 @@ window.addEventListener('load', function() {
             output.sendMIDIMessage(midiAccess.createMIDIMessage(midiBridge.PROGRAM_CHANGE, 0, programId, 0));
         }
     });
-    
-   
     
     midiBridge.init(function(_midiAccess){
         
@@ -100,34 +97,32 @@ window.addEventListener('load', function() {
             console.log(output.toString());
         });
         
-        // CANNOT USE A FILE CHOOSER
-
-
-        //create a MIDI file chooser
-        midiBridge.createMIDIFileChooser(chooseFile, uploadUrl, sequencer, function(args){
-            if(args.fileName === undefined){
-                info.style.color = "#f00";
-                info.innerHTML = args;
-                return;
-            }
+        
+        // //create a MIDI file chooser
+        // midiBridge.createMIDIFileChooser(chooseFile, uploadUrl, sequencer, function(args){
+        //     if(args.fileName === undefined){
+        //         info.style.color = "#f00";
+        //         info.innerHTML = args;
+        //         return;
+        //     }
             
-            info.innerHTML = "<span class='label'>file:</span> <span class='value'>" + args.fileName + "</span> ";
-            alert(args.fileName);
-            // info.innerHTML += "<span class='label'>length:</span><span class='value'>" + midiBridge.formatMicroseconds(args.microsecondLength) + "</span> ";
-            // info.innerHTML += "<span class='label'>ticks:</span><span class='value'>" + args.tickLength + "</span> ";
-            // info.innerHTML += "<span class='label'>position:</span><span id='time' class='value'>0:00:000</span>";
+        //     info.innerHTML = "<span class='label'>file:</span> <span class='value'>" + args.fileName + "</span> ";
+        //     lastMessage.innerHTML = args.fileName;
+        //     info.innerHTML += "<span class='label'>length:</span><span class='value'>" + midiBridge.formatMicroseconds(args.microsecondLength) + "</span> ";
+        //     info.innerHTML += "<span class='label'>ticks:</span><span class='value'>" + args.tickLength + "</span> ";
+        //     info.innerHTML += "<span class='label'>position:</span><span id='time' class='value'>0:00:000</span>";
 
-            // duration = args.duration;
-            // slider.setRange(0, duration);
-            // position = info.querySelector("#time");            
-        });
+        //     duration = args.duration;
+        //     slider.setRange(0, duration);
+        //     position = info.querySelector("#time");            
+        // });
 
 
         sequencer.addEventListener("midimessage",function(e){
             lastMessage.innerHTML = e.toString() + "<br/>";
-            var timeStamp = parseInt(e.timeStamp);
-            slider.setPercentage(((timeStamp / 1000) >> 0) / duration, false);
-            position.innerHTML = midiBridge.formatMicroseconds(timeStamp);
+            // var timeStamp = parseInt(e.timeStamp);
+            // slider.setPercentage(((timeStamp / 1000) >> 0) / duration, false);
+            // position.innerHTML = midiBridge.formatMicroseconds(timeStamp);
             if(output){
                 output.sendMIDIMessage(e);
             }
