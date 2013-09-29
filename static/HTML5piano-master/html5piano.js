@@ -68,6 +68,8 @@ _public.Piano = {
                 options.powerOffStroke          = options.powerOffStroke || colors.black;                       
                 options.voice                           = options.voice || _public.Piano.Voices.GRAND_PIANO;
                 options.extension                       = reqs.ext;
+                options.onKeyPress = options.onKeyPress || function(herp){};
+                options.onKeyRelease = options.onKeyRelease || function(derp){};
 
                 reqs.target.appendChild(_private.Piano(options, reqs.canvas));
 
@@ -309,7 +311,7 @@ _private.Piano.Background.prototype = {
     }
 };
 
-_private.Piano.Key = function(x, y, w, h, fill, stroke, afill, astroke) {
+_private.Piano.Key = function(x, y, w, h, fill, stroke, afill, astroke, note, onPress, onRelease) {
     this.x                          = x;
     this.y                          = y;
     this.width                      = w;
@@ -319,6 +321,9 @@ _private.Piano.Key = function(x, y, w, h, fill, stroke, afill, astroke) {
     this.stroke                     = stroke;
     this.activeFill         = afill;
     this.activeStroke       = astroke;
+    this.note = note;
+    this.pressCallback = onPress;
+    this.releaseCallback = onRelease;
 };
 
 _private.Piano.Key.map = {
@@ -375,7 +380,10 @@ _private.Piano.Key.loadKeys = function(options, callback, keyData, keys, key, pa
                     options.whiteKeyFill,
                     options.whiteKeyStroke,
                     options.activeKeyFill,
-                    options.activeKeyStroke);
+                    options.activeKeyStroke,
+                    key,
+                    options.onKeyPress,
+                    options.onKeyRelease);
             keyData.white.dx += keyData.white.width; 
             if(keyData.last === "w") { keyData.black.dx += keyData.white.width; }
             keyData.last = "w";
@@ -388,7 +396,10 @@ _private.Piano.Key.loadKeys = function(options, callback, keyData, keys, key, pa
                     options.blackKeyFill,
                     options.blackKeyStroke,
                     options.activeKeyFill,
-                    options.activeKeyStroke);
+                    options.activeKeyStroke,
+                    key,
+                    options.onKeyPress,
+                    options.onKeyRelease);
             keyData.black.dx += keyData.white.width;
             keyData.last = "b";
         }
@@ -428,14 +439,17 @@ _private.Piano.Key.prototype = {
     press: function() {
 
         if(!this.pressed) {	
+            this.pressCallback(this.note);
             _private.Piano.stopAudio(this.audio);			
             this.audio.play();
             this.pressed = true;
         }
     },
     release: function() {
-        console.log("Key released");
-        this.pressed = false;
+        if(this.pressed) {
+            this.releaseCallback(this.note);
+            this.pressed = false;
+        }
     },
     isMouseHit: function(x, y) {
         return (x >= this.x) && (y >= this.y) && (x <= this.x + this.width) && (y <= this.y + this.height);

@@ -7,18 +7,38 @@
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <!--[if lt IE 9]>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta3)/IE9.js"></script><![endif]-->
+
+<script src="{{ url_for('static', filename='HTML5piano-master/html5piano.js') }}"></script>
+<script>
+window.addEventListener('load', function() {
+    window.noteStarts = [];
+    window.noteStops = [];
+    Piano.load("piano", {
+        width: 550,
+        height: 550,
+        backgroundFill: "#333",
+        onKeyPress: function(note){
+            console.log(note + " pressed");
+            window.noteStarts.push([note, Date.now()]);
+        },
+        onKeyRelease: function(note){
+            console.log(note + " released");
+            window.noteStops.push([note, Date.now()])
+        }
+    });
+});
+function dumpData() {
+    console.log(JSON.stringify(window.noteStarts));
+    console.log(JSON.stringify(window.noteStops));
+}
+
+</script>
 </head>
 
 <body>
+<button onClick="dumpData()">Dump data</button>
 <div id="piano"></div>
-<script src="{{ url_for('static', filename='HTML5piano-master/html5piano.js') }}"></script>
-<script>
-Piano.load("piano", {
-width: 550,
-height: 550,
-backgroundFill: "#333"
-});
-</script>
+
 </body>
 
 </html>
