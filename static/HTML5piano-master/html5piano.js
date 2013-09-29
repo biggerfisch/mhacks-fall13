@@ -18,8 +18,8 @@
 (function(_public, _private){
 
     var 
-    AUDIO_FOLDER = "HTML5piano-master/instruments",
-    BROWSER_IMAGE = "HTML5piano-master/browser.jpg";
+    AUDIO_FOLDER = "/static/HTML5piano-master/instruments",
+    BROWSER_IMAGE = "/static/HTML5piano-master/browser.jpg";
 
 _public.Piano = {
 
