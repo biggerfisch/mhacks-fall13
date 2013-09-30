@@ -64,15 +64,21 @@ function convertBeat(b) {
     return String(Math.floor(b / 4)) + "." + String(b % 4 + 1);
 }
 
-function SendData(notesList){
-    if (notesList.length == 0){
+function SendData(bpm, pitchList, timeList, durationList){
+    if (pitchList.length == 0){
         return;
+    }
+    d = {
+        bpm: bpm,
+        pitches: pitchList,
+        times: timeList,
+        durations: durationList
     }
     jQuery.ajax({
         type: "POST",
-        url: "http://localhost:5000/songs",
+        url: "http://" + window.location.host + "/songs",
         contentType: 'application/json',
-        data: JSON.stringify(notesList),
+        data: JSON.stringify(d),
         dataType: "json",
         success: function(response){
             console.log("HERP DERP");
@@ -83,11 +89,14 @@ function SendData(notesList){
 }
 
 function dumpData() {
-    var TEMPO = Number(document.getElementById('tempo').value);
-    console.log(TEMPO);
+    var tempo = Number(document.getElementById('tempo').value);
+    console.log(tempo);
 
-    var midi_notes = [];
-    var ms_per_eighth = 60000 / TEMPO / 2;
+    var midi_pitches = [];
+    var midi_times = [];
+    var midi_durations = [];
+
+    var ms_per_eighth = 60000 / tempo / 2;
     
     // Assuming they're the same length for now...
     console.log(window.noteStarts.length, window.noteStops.length);
@@ -102,17 +111,20 @@ function dumpData() {
             delta = window.noteStarts[i+1][1] - window.noteStarts[i][1];
             duration = closestMultiple(delta, ms_per_eighth);
         } else {
-            duration = midi_notes[midi_notes.length-1][2];
+            duration = midi_times[midi_times.length-1];
         }
-        midi_notes.push([
-            window.noteStarts[i][0], // The note
-            convertBeat(beat),
-            duration
-        ]);
+
+        midi_pitches.push(window.noteStarts[i][0]);
+        midi_times.push(convertBeat(beat));
+        midi_durations.push(duration);
+
         beat += duration;
     }
-    console.log(JSON.stringify(midi_notes));
-    SendData(midi_notes);
+    console.log(JSON.stringify(midi_pitches));
+    console.log(JSON.stringify(midi_times));
+    console.log(JSON.stringify(midi_durations));
+
+    SendData(tempo, midi_pitches, midi_times, midi_durations);
 }
 
 function clearData() {
