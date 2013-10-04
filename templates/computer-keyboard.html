@@ -111,7 +111,7 @@ function dumpData() {
             delta = window.noteStarts[i+1][1] - window.noteStarts[i][1];
             duration = closestMultiple(delta, ms_per_eighth);
         } else {
-            duration = midi_times[midi_times.length-1];
+            duration = midi_durations[midi_durations.length-1];
         }
 
         midi_pitches.push(window.noteStarts[i][0]);

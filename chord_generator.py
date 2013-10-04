@@ -10,6 +10,7 @@ import timeit
 import re
 from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
+import subprocess
 
 app = Flask(__name__)
 app.config.from_pyfile('app.cfg')
@@ -273,6 +274,14 @@ def MidiFileCreator(melody,song):
     MyMIDI.writeFile(binfile)
     binfile.close()
     return "blah"
+
+def synthesize_wav(token):
+    mid_file = os.path.join(base, "static", "songs", token + ".mid")
+    out_file = os.path.join(base, "static", "songs", token + ".wav")
+    sf2_file = os.path.join(base, "static", "songs", "piano.sf2")
+
+    subprocess.call(['fluidsynth', '-T', 'wav',
+        '-F', out_file, '-ni', sf2_file, mid_file])
 
 #Testing Area:
 # Times = [4,5,6,7,8]
