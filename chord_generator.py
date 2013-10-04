@@ -2,7 +2,6 @@ from __future__ import division
 
 from flask import Flask
 
-from pprint import pprint
 import json
 import random
 import os
@@ -101,12 +100,6 @@ def convertToFilePathSyntax(ChordNameString):
     ChordNameString = ChordNameString.replace('/','#')
     return ChordNameString
 
-# def getRoot(ListOfNotes,ListofTimes):
-#     print "BAKA"
-
-# def getKey(ListOfNotes,ListofTimes,root):
-#     print "BAKA"
-
 def getNumberofMeasures(ListofTimes):
     # total = 0
     # for i in ListofTimes:
@@ -145,10 +138,7 @@ def noteIsMajorSecond(rootOfChord,note):
 def chordFits(Chord,notesInMeasure,root):
     numberofConflicts = 0
     NewChord = []
-    # print(Chord)
     for note in Chord:
-        # print "This is 147"
-        # print(note)
         NewChord.append(note+root)
     Chord = NewChord
     for note in notesInMeasure:
@@ -176,7 +166,6 @@ def weightedChordChoice(chords):
         if upto + int(chord['count']) > r:
             return chord
         upto += int(chord['count'])
-        # pprint(chord)
     assert False, "Shouldn't get here"
 
 def weightedFirstChordChoice(chords):
@@ -184,9 +173,6 @@ def weightedFirstChordChoice(chords):
     for chord in chords:
         total = total + int(chord[0]['prob'])
     r = random.uniform(0, total)
-    # print(r)
-    # print "155"
-    #pprint(chords)
     upto = 0
     for chord in chords:
         if upto + float(chord[0]['prob']) > r:
@@ -235,10 +221,8 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
         while(not chordFits(ChordIntoNotes,notesInMeasure,root)):
             tempChord = weightedChordChoice(data['children'])
             ChordIntoNotes = voice_chord(tempChord['SInED'])
-        # pprint(tempChord)
         ChordIntoNotes = voice_chord(tempChord['SInED']) 
         # newListToMakeShitMakeSense = [x+1 for x in ChordIntoNotes]
-        # print(newListToMakeShitMakeSense)
         ListOfChords.append(tempChord['SInED'])
         i = i + '.' + convertToFilePathSyntax(tempChord['SInED'])
 
@@ -284,12 +268,3 @@ def synthesize_wav(token):
 
     subprocess.call(['fluidsynth', '-T', 'wav',
         '-F', out_file, '-ni', sf2_file, mid_file])
-
-#Testing Area:
-# Times = [4,5,6,7,8]
-# Notes = [48,52,55,52,48]
-# Durations = [1,1,1,1,4]
-# # # # #getNotesInMeasure(Notes,Times,0)
-# print(ChordGenerator(Notes,Durations,Times))
-#print(chordFits(Chord[0],Notes,root))
-#print(getFirstChord(Notes))
