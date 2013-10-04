@@ -201,6 +201,8 @@ def getFirstChord(notesInMeasure):
         not_shitty_chords += [(j,root) for j in first_json if chordFits(voice_chord(j['path']),notesInMeasure,root)]
     if not_shitty_chords:
         return weightedFirstChordChoice(not_shitty_chords)
+    else:
+        return weightedFirstChordChoice([(j,48+i) for i in range(12) for j in first_json])
 
 
 
@@ -257,7 +259,7 @@ def MidiFileCreator(melody,song):
     track = 0
     channel = 0
     time = 0
-    duration = 1
+    duration = 4
     volume = 100
     MyMIDI.addTrackName(track,time,"Herp derp")
     MyMIDI.addTempo(track,time,bpm)
