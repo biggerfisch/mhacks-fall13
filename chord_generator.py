@@ -183,17 +183,17 @@ def weightedFirstChordChoice(chords):
 def getFirstChord(notesInMeasure):
     not_shitty_chords = []
     for i in range(12):
-        root = 48 + i
+        root = 68 + i
         not_shitty_chords += [(j,root) for j in first_json if chordFits(voice_chord(j['path']),notesInMeasure,root)]
     if not_shitty_chords:
         return weightedFirstChordChoice(not_shitty_chords)
     else:
-        return weightedFirstChordChoice([(j,48+i) for i in range(12) for j in first_json])
+        return weightedFirstChordChoice([(j,68+i) for i in range(12) for j in first_json])
 
 
 
 def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
-    #List of notes will be between 48 and 64 as constrained by client-side input
+    #List of notes will be between 68 and 78 as constrained by client-side input
     #THIS COMMENT IS IMPORTANT ^^^
 
     #Generate all possible starting chords

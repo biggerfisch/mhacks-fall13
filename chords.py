@@ -62,7 +62,7 @@ def make_song():
     dbSong = db.songs.find_one({'token': token})
     
     MidiFileCreator(dbMelody,dbSong)
-    sythesize_wav(token)
+    synthesize_wav(token)
 
     return jsonify({'token': token,
     'chords': chords}), 201
