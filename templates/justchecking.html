@@ -8,6 +8,14 @@
     {{ super() }}
 {% endblock %}
 {% block main_block %}
-    <input type="checkbox" id="c1" name="cc" class="note" />
-    <label for="c1"><span></span></label>
+    <div id="note-grid">
+    {% for row in range(11,-1,-1): %}
+        <div class="note-row">
+        {% for col in range(16): %}
+            <input type="checkbox" id="c-{{row}}-{{col}}" name="cc" class="note note-{{row}}" />
+            <label for="c-{{row}}-{{col}}"></label>
+        {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
 {% endblock %}
