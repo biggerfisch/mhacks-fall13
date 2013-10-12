@@ -1,0 +1,18 @@
+.note, input[type="checkbox"]{
+    display: none;
+}
+
+.note, input[type="checkbox"] + label span {
+    display: inline-block;
+    color: #FFF;
+    background-color: #FFF;
+    width: 80px;
+    height: 30px;
+    border: 1px solid black;
+
+}
+
+.note, input[type="checkbox"]:checked + label span {
+    color: #F00;
+    background-color: #F00;
+}
