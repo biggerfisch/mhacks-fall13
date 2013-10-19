@@ -224,6 +224,8 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
     for numba in range(int(numMeasures)-1):
         num = numba + 1 
         i = i.replace("/","#")
+        if i not in ChordDictionary:
+            break
         data = ChordDictionary[i]
         notesInMeasure = getNotesInMeasure(ListOfNotes,ListofTimes,numba);
         tempChord = weightedChordChoice(data['children']) 
