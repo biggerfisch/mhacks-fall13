@@ -3,6 +3,7 @@ chord_generator-old.pyc
 app.cfg
 static/songs/*.mid
 static/songs/*.wav
+static/songs/*.sf2
 *.pyc
 *.swp
 venv/
