@@ -1,4 +1,8 @@
 *.wsgi
 chord_generator-old.pyc
 app.cfg
-static/songs/*
+static/songs/*.mid
+static/songs/*.wav
+*.pyc
+*.swp
+venv/

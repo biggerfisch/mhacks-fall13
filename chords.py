@@ -1,4 +1,4 @@
-from chord_generator import ChordGenerator, MidiFileCreator
+from chord_generator import ChordGenerator, MidiFileCreator, synthesize_wav
 
 from flask import Flask, request, jsonify, render_template, abort, make_response
 from pymongo import MongoClient
@@ -61,7 +61,8 @@ def make_song():
     dbMelody = db.melodies.find_one({'token': token})
     dbSong = db.songs.find_one({'token': token})
     
-    #MidiFileCreator(dbMelody,dbSong)
+    MidiFileCreator(dbMelody,dbSong)
+    synthesize_wav(token)
 
     return jsonify({'token': token,
     'chords': chords}), 201
@@ -81,7 +82,7 @@ def about_page():
 
 @app.route('/keyboard/')
 def keyboard_page():
-    return render_template('computer-keyboard.html')
+    return render_template('noteboard.html')
 
 @app.route('/playback/')
 def playback_page():

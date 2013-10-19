@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/notebox.css') }}">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='HTML5piano-master/html5piano.js') }}"></script>
+{% endblock %}
+{% block navigation %}
+    {{ super() }}
+{% endblock %}
+{% block main_block %}
+    <div id="note-grid">
+    {% for row in range(11,-1,-1): %}
+        <div class="note-row">
+        {% for col in range(16): %}
+            <input type="checkbox" id="c-{{row}}-{{col}}" name="cc" class="note note-{{row}}" />
+            <label for="c-{{row}}-{{col}}"></label>
+        {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+    <div id="piano"></div>
+{% endblock %}

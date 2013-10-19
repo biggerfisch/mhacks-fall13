@@ -2,7 +2,6 @@ from __future__ import division
 
 from flask import Flask
 
-from pprint import pprint
 import json
 import random
 import os
@@ -10,6 +9,7 @@ import timeit
 import re
 from itertools import cycle, islice
 from midiutil.MidiFile import MIDIFile
+import subprocess
 
 app = Flask(__name__)
 app.config.from_pyfile('app.cfg')
@@ -100,12 +100,6 @@ def convertToFilePathSyntax(ChordNameString):
     ChordNameString = ChordNameString.replace('/','#')
     return ChordNameString
 
-# def getRoot(ListOfNotes,ListofTimes):
-#     print "BAKA"
-
-# def getKey(ListOfNotes,ListofTimes,root):
-#     print "BAKA"
-
 def getNumberofMeasures(ListofTimes):
     # total = 0
     # for i in ListofTimes:
@@ -144,10 +138,7 @@ def noteIsMajorSecond(rootOfChord,note):
 def chordFits(Chord,notesInMeasure,root):
     numberofConflicts = 0
     NewChord = []
-    # print(Chord)
     for note in Chord:
-        # print "This is 147"
-        # print(note)
         NewChord.append(note+root)
     Chord = NewChord
     for note in notesInMeasure:
@@ -175,7 +166,6 @@ def weightedChordChoice(chords):
         if upto + int(chord['count']) > r:
             return chord
         upto += int(chord['count'])
-        # pprint(chord)
     assert False, "Shouldn't get here"
 
 def weightedFirstChordChoice(chords):
@@ -183,9 +173,6 @@ def weightedFirstChordChoice(chords):
     for chord in chords:
         total = total + int(chord[0]['prob'])
     r = random.uniform(0, total)
-    # print(r)
-    # print "155"
-    #pprint(chords)
     upto = 0
     for chord in chords:
         if upto + float(chord[0]['prob']) > r:
@@ -196,15 +183,17 @@ def weightedFirstChordChoice(chords):
 def getFirstChord(notesInMeasure):
     not_shitty_chords = []
     for i in range(12):
-        root = 48 + i
+        root = 68 + i
         not_shitty_chords += [(j,root) for j in first_json if chordFits(voice_chord(j['path']),notesInMeasure,root)]
     if not_shitty_chords:
         return weightedFirstChordChoice(not_shitty_chords)
+    else:
+        return weightedFirstChordChoice([(j,68+i) for i in range(12) for j in first_json])
 
 
 
 def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
-    #List of notes will be between 48 and 64 as constrained by client-side input
+    #List of notes will be between 68 and 78 as constrained by client-side input
     #THIS COMMENT IS IMPORTANT ^^^
 
     #Generate all possible starting chords
@@ -234,10 +223,8 @@ def ChordGenerator(ListOfNotes,ListofDurations,ListofTimes):
         while(not chordFits(ChordIntoNotes,notesInMeasure,root)):
             tempChord = weightedChordChoice(data['children'])
             ChordIntoNotes = voice_chord(tempChord['SInED'])
-        # pprint(tempChord)
         ChordIntoNotes = voice_chord(tempChord['SInED']) 
         # newListToMakeShitMakeSense = [x+1 for x in ChordIntoNotes]
-        # print(newListToMakeShitMakeSense)
         ListOfChords.append(tempChord['SInED'])
         i = i + '.' + convertToFilePathSyntax(tempChord['SInED'])
 
@@ -258,7 +245,7 @@ def MidiFileCreator(melody,song):
     track = 0
     channel = 0
     time = 0
-    duration = 1
+    duration = 4
     volume = 100
     MyMIDI.addTrackName(track,time,"Herp derp")
     MyMIDI.addTempo(track,time,bpm)
@@ -276,11 +263,10 @@ def MidiFileCreator(melody,song):
     binfile.close()
     return "blah"
 
-#Testing Area:
-# Times = [4,5,6,7,8]
-# Notes = [48,52,55,52,48]
-# Durations = [1,1,1,1,4]
-# # # # #getNotesInMeasure(Notes,Times,0)
-# print(ChordGenerator(Notes,Durations,Times))
-#print(chordFits(Chord[0],Notes,root))
-#print(getFirstChord(Notes))
+def synthesize_wav(token):
+    mid_file = os.path.join(base, "static", "songs", token + ".mid")
+    out_file = os.path.join(base, "static", "songs", token + ".wav")
+    sf2_file = os.path.join(base, "static", "songs", "piano.sf2")
+
+    subprocess.call(['fluidsynth', '-T', 'wav',
+        '-F', out_file, '-ni', sf2_file, mid_file])
