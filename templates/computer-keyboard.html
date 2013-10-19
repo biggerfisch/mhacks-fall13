@@ -1,27 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<title>HTML5 Piano!</title>
-<!--[if IE]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<!--[if lt IE 9]>
-<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta3)/IE9.js"></script><![endif]-->
+{% extends "layout.html" %}
+{% block title %}{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript" src="{{ url_for('static', filename='MIDIBridge.js') }}"></script>     
+    <script type="text/javascript" src="{{ url_for('static', filename='MIDIDeviceSelector.js') }}"></script>     
+    <script type="text/javascript" src="{{ url_for('static', filename='computer-keyboard.js') }}"></script>
+    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='midibridge.css') }}"/>
+{% endblock %}
+{% block navigation%}
+    {{ super() }}
+{% endblock %}
+{% block main_block %}
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <div id="content">
+            <!-- display keyboard mapping -->
+            <div id="help-message"></div>
 
-<script src="{{ url_for('static', filename='HTML5piano-master/html5piano.js') }}"></script>
-<script src="{{ url_for('static', filename='js/keyboard.js') }}"></script>
-</head>
+            <div>
+                <button onClick="dispDataClick()">Display data</button>
+                <span>
+                    <button onClick="clearAll()">Clear Output</button>
+                    <button style="background:green; color:white;" onClick="SendData()">Send Melody!</button>
+                </span>
+            </div>
 
-<body>
-<input id="tempo" value=140></input>
-<button onClick="dumpData()">Generate Chords</button>
-<button onClick="clearData()">Reset</button>
-<div id="piano"></div>
+            <!-- MIDI messages get displayed here -->
+            <div id="messages">Please select a MIDI output<br/></div>
 
-<div id="song"></div>
+            <!-- Bar Nums -->
+            <div id="barNum" style="font-size: 200%"><br/></div>
 
-</body>
+            <!-- METRONOME STUFF!!! -->
+            <table class="example">
+                <tr>
+                    <td><div id="metronome_container"></div></td>
+                    <td><div class="status"></div></td>
+                </tr>
+                <tr>
+                    <td colspan=2 id="inputs"></td>
+                </tr>
+            </table>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+            <script>
+                /*global $ Raphael soundManager metronome*/
 
-</html>
+                function tick(t) {
+                    // $("<div />").html(t % 2 === 1 ? "Tick" : "Tock").addClass("statusline").appendTo(".status");
+                    // $("#count").html(t);    
+                }
+
+                function done() {
+                //     $("<div />").html("Done!").addClass("statusline").css("background-color", "#FFFF99").appendTo(".status");
+                     $("#startstop").html("start");
+                }
+
+                var paper = Raphael("metronome_container", 200, 200);
+
+                var m = metronome({
+                    len: 200,
+                    angle: 20,
+                    tick: tick,
+                    complete: done,
+                    paper: paper,
+                    audio: "{{ url_for('static', filename='tick.wav') }}"
+                });
+
+                m.make_input("#inputs");
+
+                m.shapes().outline.attr("fill", "#00A30F");
+                m.shapes().arm.attr("stroke", "#EEE");
+            </script>
+            <!-- END METRONOME STUFF!!! -->
+
+        </div>
+{% endblock %}

@@ -82,15 +82,11 @@ def about_page():
 
 @app.route('/keyboard/')
 def keyboard_page():
-    return render_template('computer-keyboard.html')
+    return render_template('noteboard.html')
 
 @app.route('/playback/')
 def playback_page():
     return render_template('play-midifile.html')
-
-@app.route('/checkup/')
-def checkbox_test():
-    return render_template('justchecking.html')
     
 if __name__ == '__main__':
     app.run(debug=True)
