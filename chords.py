@@ -6,8 +6,22 @@ from pymongo import MongoClient
 import random
 import base64
 
+import logging
+import os
+
 app = Flask(__name__)
 app.config.from_pyfile('app.cfg')
+
+#if app.debug is not True:
+if True:
+    file_handler = logging.FileHandler(os.path.join('/tmp','python.log'))
+    file_handler.setLevel(logging.ERROR)
+    app.logger.addHandler(file_handler)
+
+@app.errorhandler(500)
+def internal_error(exception):
+    app.logger.exception(exception)
+    return render_template('500.html'), 500
 
 client = MongoClient()
 db = client['chordinator']
@@ -89,4 +103,4 @@ def playback_page():
     return render_template('play-midifile.html')
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
