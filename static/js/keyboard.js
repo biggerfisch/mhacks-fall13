@@ -89,10 +89,10 @@ function sendData(bpm, pitchList, timeList, durationList){
         dataType: "json",
         success: function(response){
             console.log(JSON.stringify(response));
-            $("#song").val(
+            var link = 
                 "http://" + window.location.host +
-                "/songs/" + response.token
-            );
+                "/songs/" + response.token;
+            $("#song").html("<a href=" + link + ">View Song</a>");
         }
     });
 }
@@ -105,7 +105,7 @@ function dumpData() {
     var midi_times = [];
     var midi_durations = [];
 
-    var ms_per_eighth = 60000 / tempo / 2;
+    var ms_per_quarter = 60000 / tempo;
     
     // Assuming they're the same length for now...
     console.log(window.noteStarts.length, window.noteStops.length);
@@ -118,7 +118,7 @@ function dumpData() {
             duration = 1;
         } else if (i < window.noteStarts.length - 1) {
             delta = window.noteStarts[i+1][1] - window.noteStarts[i][1];
-            duration = closestMultiple(delta, ms_per_eighth);
+            duration = closestMultiple(delta, ms_per_quarter);
         } else {
             duration = midi_durations[midi_durations.length-1];
         }
